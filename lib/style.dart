@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-var theme = ThemeData(
+var mainTheme = ThemeData(
   appBarTheme: AppBarTheme(
     elevation: 1,
     color: Colors.white,
@@ -20,8 +20,5 @@ var theme = ThemeData(
     ),
     backgroundColor: Colors.white,
     selectedItemColor: Colors.deepPurple,
-    selectedLabelStyle: TextStyle(fontSize: 14),
-    unselectedLabelStyle:
-        TextStyle(fontSize: 12),
   ),
 );

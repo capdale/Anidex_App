@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'src/theme/style.dart' as style;
-import 'src/store/store.dart' as store;
-import 'src/widgets/_init.dart' as widget;
+import 'src/theme/_init.dart' as style;
+import 'src/store/_init.dart' as store;
+import 'src/widgets/_init.dart' as widgets;
+import 'src/pages/_init.dart' as pages;
 
 void main() {
   runApp(ChangeNotifierProvider(
@@ -31,10 +32,10 @@ class _MyAppState extends State<MyApp> {
       ),
       body: [
         Text('index'),
-        widget.CaptureButton(),
+        pages.Home(),
         Text('gallery')
       ][context.watch<store.Pages>().tab],
-      bottomNavigationBar: widget.BotNaviBar(),
+      bottomNavigationBar: widgets.BotNaviBar(),
     );
   }
 }

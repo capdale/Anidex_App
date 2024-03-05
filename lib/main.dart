@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'style.dart' as style;
-import 'store.dart' as store;
-import 'widget.dart' as widget;
+import 'src/theme/style.dart' as style;
+import 'src/store/store.dart' as store;
+import 'src/widgets/_init.dart' as widget;
 
 void main() {
   runApp(ChangeNotifierProvider(

@@ -7,7 +7,7 @@ import 'src/pages/_init.dart' as pages;
 
 void main() {
   runApp(ChangeNotifierProvider(
-      create: (c) => store.Pages(),
+      create: (c) => store.Tabs(),
       child: MaterialApp(theme: style.mainTheme, home: MyApp())));
 }
 
@@ -21,20 +21,15 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    final tabIndex = context.watch<store.Tabs>().tab;
+
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80,
-        leading: IconButton(
-            onPressed: () {}, icon: Icon(Icons.account_circle), iconSize: 50),
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings), iconSize: 50)
-        ],
-      ),
+      appBar: tabIndex == 1 ? widgets.MyAppBar() : null,
       body: [
         Text('index'),
         pages.Home(),
-        Text('gallery')
-      ][context.watch<store.Pages>().tab],
+        pages.Gallery()
+      ][tabIndex],
       bottomNavigationBar: widgets.BotNaviBar(),
     );
   }

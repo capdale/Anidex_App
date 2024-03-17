@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import '../widgets/_init.dart' as widgets;
 
 class Index extends StatefulWidget {
@@ -11,6 +12,11 @@ class Index extends StatefulWidget {
 class _IndexState extends State<Index> {
   @override
   Widget build(BuildContext context) {
-    return widgets.SearchBar();
+    return Scaffold(
+      body: CustomScrollView(slivers: <Widget>[
+        widgets.CustomedSearchBar(pinned: true),
+        widgets.IndexListView(),
+      ]),
+    );
   }
 }

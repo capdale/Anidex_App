@@ -20,13 +20,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(80);
 }
 
-
 class BotNaviBar extends StatefulWidget {
   const BotNaviBar({super.key});
 
   @override
   State<BotNaviBar> createState() => _BotNaviBarState();
 }
+
 class _BotNaviBarState extends State<BotNaviBar> {
   @override
   Widget build(BuildContext context) {
@@ -56,18 +56,12 @@ class _BotNaviBarState extends State<BotNaviBar> {
   }
 }
 
-
-class SearchBar extends StatefulWidget {
+class SearchBar extends StatelessWidget {
   const SearchBar({super.key});
 
   @override
-  State<SearchBar> createState() => _SearchBarState();
-}
-class _SearchBarState extends State<SearchBar> {
-  @override
   Widget build(BuildContext context) {
-    return  PreferredSize(
-      preferredSize: Size.fromHeight(kToolbarHeight),
+    return SizedBox(
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: TextField(
@@ -87,15 +81,16 @@ class _SearchBarState extends State<SearchBar> {
   }
 }
 
+class CustomedSearchBar extends StatelessWidget {
+  final bool pinned;
 
-class GallerySearchBar extends StatelessWidget {
-  const GallerySearchBar({super.key});
+  const CustomedSearchBar({super.key, this.pinned = false});
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       floating: true,
-      pinned: false,
+      pinned: pinned,
       flexibleSpace: FlexibleSpaceBar(
         background: SearchBar(),
       ),
@@ -103,5 +98,3 @@ class GallerySearchBar extends StatelessWidget {
     );
   }
 }
-
-

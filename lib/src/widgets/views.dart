@@ -6,6 +6,7 @@ class GalleryGridView extends StatefulWidget {
   @override
   State<GalleryGridView> createState() => _GalleryGridViewState();
 }
+
 class _GalleryGridViewState extends State<GalleryGridView> {
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class _GalleryGridViewState extends State<GalleryGridView> {
         mainAxisSpacing: 0, // Spacing between rows
       ),
       delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
+        (BuildContext context, int index) {
           return Container(
             alignment: Alignment.center,
             color: Colors.blue[100 * (index % 9)],
@@ -26,5 +27,31 @@ class _GalleryGridViewState extends State<GalleryGridView> {
         childCount: 42, // Number of items in the grid
       ),
     );
+  }
+}
+
+class IndexListView extends StatefulWidget {
+  const IndexListView({super.key});
+
+  @override
+  State<IndexListView> createState() => _IndexListViewState();
+}
+
+class _IndexListViewState extends State<IndexListView> {
+  @override
+  Widget build(BuildContext context) {
+    return SliverList(
+        delegate: SliverChildBuilderDelegate((context, index) {
+      return ListTile(
+        leading: Text('NO. ${(index + 1).toString().padLeft(3, '0')}'),
+        title: TextButton(
+          onPressed: () {},
+          style: ButtonStyle(
+            alignment: Alignment.centerLeft
+          ),
+          child: Text('???'),
+        ),
+      );
+    }, childCount: 100));
   }
 }

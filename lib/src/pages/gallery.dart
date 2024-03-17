@@ -29,7 +29,7 @@ class _GalleryState extends State<Gallery> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(controller: scrollCheck, slivers: <Widget>[
-        widgets.GallerySearchBar(),
+        widgets.CustomedSearchBar(pinned: false),
         widgets.GalleryGridView(),
       ]),
       floatingActionButton: widgets.WriteButton(),

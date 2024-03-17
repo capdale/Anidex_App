@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CaptureButton extends StatelessWidget {
   const CaptureButton({super.key});
@@ -29,6 +28,26 @@ class CaptureButton extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class WriteButton extends StatelessWidget {
+  const WriteButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 70.0,
+      width: 70.0,
+      child: FittedBox(
+        child: FloatingActionButton(
+          onPressed: (){},
+          backgroundColor: Colors.deepPurpleAccent,
+          shape: CircleBorder(),
+          child: Icon(Icons.edit),
         ),
       ),
     );

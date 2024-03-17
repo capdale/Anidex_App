@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import '../widgets/_init.dart' as widgets;
 
 class Gallery extends StatefulWidget {
@@ -9,8 +9,28 @@ class Gallery extends StatefulWidget {
 }
 
 class _GalleryState extends State<Gallery> {
+  var scrollCheck = ScrollController();
+
+  getData() async {}
+
+  @override
+  void initState() {
+    super.initState();
+    scrollCheck.addListener(() {
+      if (scrollCheck.position.pixels == scrollCheck.position.maxScrollExtent) {
+        getData() async {}
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return widgets.SearchBar();
+    return Scaffold(
+      body: CustomScrollView(controller: scrollCheck, slivers: <Widget>[
+        widgets.GallerySearchBar(),
+        widgets.GalleryGridView(),
+      ]),
+      floatingActionButton: widgets.WriteButton(),
+    );
   }
 }

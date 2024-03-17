@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: tabIndex == 1 ? widgets.MyAppBar() : null,
       body: [
-        Text('index'),
+        pages.Index(),
         pages.Home(),
         pages.Gallery()
       ][tabIndex],

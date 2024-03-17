@@ -11,14 +11,16 @@ class Gallery extends StatefulWidget {
 class _GalleryState extends State<Gallery> {
   var scrollCheck = ScrollController();
 
-  getData() async {}
+  getData() async {
+    // TODO: 스크롤 끝까지 내렸을 때 서버로부터 게시물 새로 불러오는 함수 구현해야 함
+  }
 
   @override
   void initState() {
     super.initState();
     scrollCheck.addListener(() {
       if (scrollCheck.position.pixels == scrollCheck.position.maxScrollExtent) {
-        getData() async {}
+        getData();
       }
     });
   }

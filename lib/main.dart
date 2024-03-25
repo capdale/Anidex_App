@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
     final tabIndex = context.watch<store.Tabs>().tab;
 
     return Scaffold(
-      appBar: tabIndex == 1 ? widgets.MyAppBar() : null,
+      appBar: tabIndex == 1 ? widgets.HomeAppBar() : null,
       body: [
         pages.Index(),
         pages.Home(),

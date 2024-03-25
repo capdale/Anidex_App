@@ -43,5 +43,5 @@ app.*.map.json
 /android/app/release
 
 # Custom gitignore
-/assets/
+*.ttf
 devtools_options.yaml

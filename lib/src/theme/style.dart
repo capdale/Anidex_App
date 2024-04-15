@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
 var mainTheme = ThemeData(
+  elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5)
+      ),
+      backgroundColor: Colors.deepPurpleAccent,
+      foregroundColor: Colors.white,
+  )),
+  scaffoldBackgroundColor: Colors.white,
   fontFamily: 'Pretendard',
   appBarTheme: AppBarTheme(
     elevation: 1,

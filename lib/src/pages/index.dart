@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/_init.dart' as widgets;
+import '../views/_init.dart' as views;
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -14,7 +15,7 @@ class _IndexState extends State<Index> {
     return Scaffold(
       body: CustomScrollView(slivers: <Widget>[
         widgets.CustomedSearchBar(pinned: true),
-        widgets.IndexListView(),
+        views.IndexList(),
       ]),
     );
   }

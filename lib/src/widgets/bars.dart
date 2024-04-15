@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../store/_init.dart' as store;
+import '../pages/_init.dart' as pages;
 
 // HomeAppBar
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -10,7 +12,15 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-          onPressed: () {}, icon: Icon(Icons.account_circle), iconSize: 50),
+          onPressed: () {
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => pages.Settings(),
+                    fullscreenDialog: true));
+          },
+          icon: Icon(Icons.account_circle),
+          iconSize: 50),
       actions: [
         IconButton(onPressed: () {}, icon: Icon(Icons.settings), iconSize: 50)
       ],
@@ -105,8 +115,10 @@ class CustomedSearchBar extends StatelessWidget {
 
 //DefaultAppBar
 class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const DefaultAppBar({super.key, this.title});
+  const DefaultAppBar({super.key, this.title, this.showActions = true});
+
   final title;
+  final bool showActions;
 
   @override
   Widget build(BuildContext context) {
@@ -118,17 +130,17 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: Icon(Icons.arrow_back),
           iconSize: 30),
       title: Text(
-        title,
+        title ?? '',
         style: TextStyle(
             color: Colors.black,
-            fontSize: 30,
-            fontWeight: FontWeight.w500 // 폰트 색상을 검정색으로 설정
+            fontSize: 22,
+            fontWeight: FontWeight.w700
             ),
       ),
       centerTitle: true,
-      actions: [
+      actions: showActions ? [
         IconButton(onPressed: () {}, icon: Icon(Icons.more_vert), iconSize: 30)
-      ],
+      ] : [],
     );
   }
 
@@ -159,7 +171,6 @@ class AuthorBar extends StatelessWidget {
     );
   }
 }
-
 
 // CommentBar
 class CommentBar extends StatelessWidget {

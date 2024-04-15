@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/_init.dart' as widgets;
+import '../views/_init.dart' as views;
 
 class Gallery extends StatefulWidget {
   const Gallery({super.key});
@@ -30,7 +31,7 @@ class _GalleryState extends State<Gallery> {
     return Scaffold(
       body: CustomScrollView(controller: scrollCheck, slivers: <Widget>[
         widgets.CustomedSearchBar(pinned: false),
-        widgets.GalleryGridView(),
+        views.GalleryGrid(),
       ]),
       floatingActionButton: widgets.WriteButton(),
     );

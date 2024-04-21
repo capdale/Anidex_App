@@ -1,3 +1,6 @@
+import 'package:anidex_app/src/widgets/_init.dart' as widgets;
+import 'package:anidex_app/src/theme/_init.dart' as theme;
+import 'package:anidex_app/src/views/_init.dart' as views;
 import 'package:flutter/material.dart';
 
 class CommentPanel extends StatefulWidget {
@@ -63,4 +66,46 @@ class _CommentPanelState extends State<CommentPanel> {
   }
 }
 
+Widget settingTable(
+    BuildContext context, String nickname, String email, String introduction) {
+  return Container(
+    decoration: theme.tableDecoration(2, 5),
+    margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+    child: Table(
+      children: [
+        widgets.settingTableRow(
+            context, '닉네임', nickname, views.ChangeNickName(nickname: nickname)),
+        widgets.settingTableRow(context, '대표 이메일', 'User1234@naver.com',
+            views.ChangeEmail(email: email)),
+        widgets.settingTableRow(context, '연동된 소셜 계정', 'User1234', null),
+        // Placeholder for onTap
+        widgets.settingTableRow(context, '소개', introduction,
+            views.ChangeIntroduction(introduction: introduction)),
+      ],
+    ),
+  );
+}
 
+Widget contentTable(BuildContext context) {
+  return Container(
+      decoration: theme.tableDecoration(2, 12),
+      margin: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
+      child: Table(
+        children: [
+          TableRow(
+              children: [widgets.contentRow(context, '학명', 'Pica serica')]),
+          TableRow(children: [
+            widgets.contentRow(context, '영문명', 'Oriental Magpie')
+          ]),
+          TableRow(
+            children: [widgets.contentCategory(context)],
+          ),
+          TableRow(
+              children: [widgets.contentRow(context, '멸종위기등급', 'Pica serica')]),
+          TableRow(
+              children: [widgets.contentRow(context, '만난 날짜', '2024-04-22')]),
+          TableRow(
+              children: [widgets.contentRow(context, '만난 장소', 'xxx, yyy')]),
+        ],
+      ));
+}

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../widgets/_init.dart' as widgets;
+import 'package:anidex_app/src/widgets/_init.dart' as widgets;
 
 class Home extends StatefulWidget {
   const Home({super.key});

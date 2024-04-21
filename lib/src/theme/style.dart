@@ -28,3 +28,10 @@ var mainTheme = ThemeData(
   ),
 );
 
+BoxDecoration tableDecoration(double width, double borderR) {
+  return BoxDecoration(
+    border: Border.all(color: Colors.black12, width: width),
+    borderRadius: BorderRadius.circular(borderR),
+    color: Colors.white,
+  );
+}

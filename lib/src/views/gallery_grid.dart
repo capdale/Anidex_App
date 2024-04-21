@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/_init.dart' as pages;
+import 'package:anidex_app/src/pages/_init.dart' as pages;
 
 // GalleryGridView
 class GalleryGrid extends StatefulWidget {

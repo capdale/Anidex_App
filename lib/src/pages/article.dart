@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/_init.dart' as widgets;
-import '../views/_init.dart' as views;
+import 'package:anidex_app/src/widgets/_init.dart' as widgets;
+import 'package:anidex_app/src/views/_init.dart' as views;
 
 class Article extends StatelessWidget {
   final int index;

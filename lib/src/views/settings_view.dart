@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/_init.dart' as widgets;
+import 'package:anidex_app/src/widgets/_init.dart' as widgets;
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -30,191 +30,13 @@ class _SettingsViewState extends State<SettingsView> {
             ),
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black12, width: 2),
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.white,
-          ),
-          margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
-          child: Table(
-            border: TableBorder.symmetric(
-              inside: BorderSide(color: Colors.black12, width: 2),
-              outside: BorderSide.none,
-            ),
-            children: [
-              TableRow(children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChangeNickName(
-                                  nickname: nickname,
-                                )));
-                  },
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(15, 20, 5, 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '닉네임',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w700),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              nickname,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Icon(
-                              Icons.chevron_right,
-                              color: Colors.grey,
-                              size: 30,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
-              TableRow(children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChangeEmail(
-                                  email: email,
-                                )));
-                  },
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(15, 20, 5, 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '대표 이메일',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w700),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'User1234@naver.com',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Icon(
-                              Icons.chevron_right,
-                              color: Colors.grey,
-                              size: 30,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
-              TableRow(children: [
-                InkWell(
-                  onTap: () {
-                    // TODO : 소셜 계정 구현
-                    print("1");
-                  },
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(15, 20, 5, 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '연동된 소셜 계정',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w700),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'User1234',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Icon(
-                              Icons.chevron_right,
-                              color: Colors.grey,
-                              size: 30,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
-              TableRow(children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChangeIntroduction(
-                                  introduction: introduction,
-                                )));
-                  },
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(15, 20, 5, 20),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '소개',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w700),
-                              ),
-                              Icon(
-                                Icons.chevron_right,
-                                color: Colors.grey,
-                                size: 30,
-                              )
-                            ],
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 14),
-                            child: Text(
-                              introduction,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          )
-                        ]),
-                  ),
-                ),
-              ]),
-            ],
-          ),
-        ),
+        widgets.settingTable(context, nickname, email, introduction)
       ],
     );
   }
 }
 
+// ChangeNickName
 class ChangeNickName extends StatefulWidget {
   const ChangeNickName({super.key, this.nickname});
 
@@ -279,6 +101,7 @@ class _ChangeNickNameState extends State<ChangeNickName> {
   }
 }
 
+// ChangeEmail
 class ChangeEmail extends StatefulWidget {
   const ChangeEmail({super.key, this.email});
 
@@ -343,6 +166,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
   }
 }
 
+// ChangeIntroduction
 class ChangeIntroduction extends StatefulWidget {
   const ChangeIntroduction({super.key, this.introduction});
 

@@ -7,3 +7,19 @@ class Tabs extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class ContentInfo extends ChangeNotifier {
+  var indexNum = 0;
+  var current = 0;
+  var imageList = [];
+  changeIndexNum(int i) {
+    indexNum = i;
+  }
+  changeCurrent(int c) {
+    current = c;
+    notifyListeners();
+  }
+  setImageList(List<String> imgList) {
+    imageList = imgList;
+  }
+}

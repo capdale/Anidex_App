@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../store/_init.dart' as store;
-import '../pages/_init.dart' as pages;
+import 'package:anidex_app/src/store/_init.dart' as store;
+import 'package:anidex_app/src/pages/_init.dart' as pages;
 
 // HomeAppBar
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -190,6 +190,32 @@ class CommentBar extends StatelessWidget {
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
+      ),
+    );
+  }
+}
+
+
+//TitleBar
+class TitleBar extends StatelessWidget {
+  final int? indexNum;
+  const TitleBar({super.key, this.indexNum});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
+              'No. ${((indexNum ?? 0) + 1).toString().padLeft(3, '0')}'),
+          SizedBox(width: 8),
+          Text(
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
+              '오늘내일한다'),
+        ],
       ),
     );
   }

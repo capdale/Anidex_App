@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/_init.dart' as widgets;
+import 'package:anidex_app/src/widgets/_init.dart' as widgets;
 
 // ArticleView
 class ArticleView extends StatefulWidget {

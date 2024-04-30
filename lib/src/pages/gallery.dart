@@ -33,7 +33,7 @@ class _GalleryState extends State<Gallery> {
         widgets.CustomedSearchBar(pinned: false),
         views.GalleryGrid(),
       ]),
-      floatingActionButton: widgets.WriteButton(),
+      floatingActionButton: widgets.writeButton(context),
     );
   }
 }

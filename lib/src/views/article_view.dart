@@ -24,7 +24,7 @@ class _ArticleViewState extends State<ArticleView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                widgets.AuthorBar(),
+                widgets.authorBar(context),
                 Image.network(
                   "https://picsum.photos/id/${widget.index}/600/600",
                   fit: BoxFit.cover,
@@ -45,8 +45,8 @@ class _ArticleViewState extends State<ArticleView> {
                             color: Colors.black54,
                             fontWeight: FontWeight.w700),
                         '2024.01.01 12:34')),
-                widgets.FavoriteAndShareButton(),
-                widgets.CommentBar(),
+                widgets.FavoriteAndShare(),
+                widgets.commentBar(context),
                 widgets.CommentPanel(),
               ],
             ),

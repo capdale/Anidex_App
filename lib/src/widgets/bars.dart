@@ -69,29 +69,24 @@ class _BotNaviBarState extends State<BotNaviBar> {
 }
 
 //SearchBar
-class SearchBar extends StatelessWidget {
-  const SearchBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: TextField(
-          decoration: InputDecoration(
-            hintText: '검색',
-            prefixIcon: Icon(Icons.search),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide.none,
-            ),
-            filled: true,
-            fillColor: Colors.grey[200],
+Widget searchBar(BuildContext context) {
+  return SizedBox(
+    child: Padding(
+      padding: EdgeInsets.all(8.0),
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: '검색',
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
           ),
+          filled: true,
+          fillColor: Colors.grey[200],
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 // CustomedSearchBar
@@ -106,7 +101,7 @@ class CustomedSearchBar extends StatelessWidget {
       floating: true,
       pinned: pinned,
       flexibleSpace: FlexibleSpaceBar(
-        background: SearchBar(),
+        background: searchBar(context),
       ),
       expandedHeight: 10,
     );
@@ -132,15 +127,15 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title ?? '',
         style: TextStyle(
-            color: Colors.black,
-            fontSize: 22,
-            fontWeight: FontWeight.w700
-            ),
+            color: Colors.black, fontSize: 22, fontWeight: FontWeight.w700),
       ),
       centerTitle: true,
-      actions: showActions ? [
-        IconButton(onPressed: () {}, icon: Icon(Icons.more_vert), iconSize: 30)
-      ] : [],
+      actions: showActions
+          ? [
+              IconButton(
+                  onPressed: () {}, icon: Icon(Icons.more_vert), iconSize: 30)
+            ]
+          : [],
     );
   }
 
@@ -148,57 +143,101 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(60);
 }
 
-// AuthorBar
-class AuthorBar extends StatelessWidget {
-  const AuthorBar({super.key});
+AppBar uploadImgBar(BuildContext context) {
+  return AppBar(
+    leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(Icons.close),
+        iconSize: 30),
+    title: Text(
+      '사진 업로드',
+      style: TextStyle(
+          color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
+    ),
+    centerTitle: true,
+    actions: [
+      TextButton(
+          onPressed: () {
+            Navigator.push(context,
+                CupertinoPageRoute(builder: (context) => pages.UploadPost(),
+                fullscreenDialog: false));
+          },
+          child: Text(
+            '다음',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          ))
+    ],
+  );
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(12.0),
-      child: Row(
-        children: [
-          Icon(
-            Icons.account_circle,
-            size: 40,
-          ),
-          SizedBox(width: 8),
-          Text(
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-              '오늘내일한다'),
-        ],
-      ),
-    );
-  }
+AppBar uploadPostBar(BuildContext context) {
+  return AppBar(
+    leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(Icons.arrow_back),
+        iconSize: 30),
+    title: Text(
+      '새 게시물',
+      style: TextStyle(
+          color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
+    ),
+    centerTitle: true,
+    actions: [
+      TextButton(
+          onPressed: () {},
+          child: Text(
+            '등록',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          ))
+    ],
+  );
+}
+
+// AuthorBar
+Widget authorBar(BuildContext context) {
+  return Container(
+    margin: EdgeInsets.all(12.0),
+    child: Row(
+      children: [
+        Icon(
+          Icons.account_circle,
+          size: 40,
+        ),
+        SizedBox(width: 8),
+        Text(
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+            '오늘내일한다'),
+      ],
+    ),
+  );
 }
 
 // CommentBar
-class CommentBar extends StatelessWidget {
-  const CommentBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      height: 50,
-      alignment: Alignment.center,
-      color: Colors.deepPurple[300],
-      child: Text(
-        '댓글',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
+Widget commentBar(BuildContext context) {
+  return Container(
+    padding: EdgeInsets.all(8.0),
+    height: 50,
+    alignment: Alignment.center,
+    color: Colors.deepPurple[300],
+    child: Text(
+      'Comment',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
       ),
-    );
-  }
+    ),
+  );
 }
-
 
 //TitleBar
 class TitleBar extends StatelessWidget {
   final int? indexNum;
+
   const TitleBar({super.key, this.indexNum});
 
   @override

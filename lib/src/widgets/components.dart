@@ -162,3 +162,57 @@ Widget sliderIndicator(BuildContext context) {
     ),
   );
 }
+
+
+class FavoriteAndShare extends StatefulWidget {
+  const FavoriteAndShare({super.key});
+
+  @override
+  State<FavoriteAndShare> createState() => _FavoriteAndShareState();
+}
+
+class _FavoriteAndShareState extends State<FavoriteAndShare> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        margin: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
+        padding: EdgeInsets.only(left: 5.0, right: 5.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.deepPurple, width: 2)),
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 8.0,
+          children: <Widget>[
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.favorite_outline,
+                  size: 40,
+                )),
+            Text(
+                style:
+                TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                '좋아요 8,765개'),
+            SizedBox(width: 4),
+            SizedBox(
+              width: 15,
+              height: 35,
+              child: VerticalDivider(
+                color: Colors.deepPurple,
+                thickness: 2,
+              ),
+            ),
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.share,
+                  size: 40,
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -32,7 +32,7 @@ class _ContentViewState extends State<ContentView> {
           widgets.TitleBar(
             indexNum: context.watch<store.ContentInfo>().indexNum,
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 5),
           SizedBox(
               height: 600,
               child: Stack(

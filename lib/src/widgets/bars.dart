@@ -76,6 +76,7 @@ Widget searchBar(BuildContext context) {
       child: TextField(
         decoration: InputDecoration(
           hintText: '검색',
+          hintStyle: TextStyle(fontSize: 20),
           prefixIcon: Icon(Icons.search),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
@@ -158,16 +159,23 @@ AppBar uploadImgBar(BuildContext context) {
     ),
     centerTitle: true,
     actions: [
-      TextButton(
-          onPressed: () {
-            Navigator.push(context,
-                CupertinoPageRoute(builder: (context) => pages.UploadPost(),
-                fullscreenDialog: false));
-          },
-          child: Text(
-            '다음',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-          ))
+      Container(
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        decoration: BoxDecoration(
+          color: Colors.deepPurpleAccent,
+          borderRadius: BorderRadius.circular(5)
+        ),
+        child: TextButton(
+            onPressed: () {
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (context) => pages.UploadPost(),
+                  fullscreenDialog: false));
+            },
+            child: Text(
+              '다음',
+              style: TextStyle(color: Color(0xFFF7F6FA), fontSize: 20, fontWeight: FontWeight.w500),
+            )),
+      )
     ],
   );
 }
@@ -187,12 +195,19 @@ AppBar uploadPostBar(BuildContext context) {
     ),
     centerTitle: true,
     actions: [
-      TextButton(
-          onPressed: () {},
-          child: Text(
-            '등록',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-          ))
+      Container(
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        decoration: BoxDecoration(
+            color: Colors.deepPurpleAccent,
+            borderRadius: BorderRadius.circular(5)
+        ),
+        child: TextButton(
+            onPressed: () {},
+            child: Text(
+              '등록',
+              style: TextStyle(color: Color(0xFFF7F6FA), fontSize: 20, fontWeight: FontWeight.w500),
+            )),
+      )
     ],
   );
 }
@@ -244,17 +259,20 @@ class TitleBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(12.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
-              'No. ${((indexNum ?? 0) + 1).toString().padLeft(3, '0')}'),
-          SizedBox(width: 8),
-          Text(
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
-              '오늘내일한다'),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.only(left: 5.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500, color: Color(0xff777777)),
+                'No. ${((indexNum ?? 0) + 1).toString().padLeft(3, '0')}'),
+            SizedBox(width: 8),
+            Text(
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
+                '까치'),
+          ],
+        ),
       ),
     );
   }

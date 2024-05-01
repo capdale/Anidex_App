@@ -35,7 +35,7 @@ class _GalleryGridState extends State<GalleryGrid> {
                 child: Image(
                   alignment: Alignment.center,
                   image: NetworkImage(
-                    "https://picsum.photos/id/$index/300/300",
+                    "https://picsum.photos/id/$index/600/600",
                   ),
                 ),
               ),

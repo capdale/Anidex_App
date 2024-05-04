@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:anidex_app/src/pages/_init.dart' as pages;
+import 'package:permission_handler/permission_handler.dart';
 
 Widget captureButton(BuildContext context) {
   return Center(
     child: Transform.scale(
       scale: 6.0,
       child: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          var status = await Permission.camera.status;
+          if (status.isGranted) {
+            print('허락됨');
+          } else if (status.isDenied) {
+            print('거절됨');
+            Permission.camera.request();
+          }
+        },
         backgroundColor: Colors.white,
         shape: CircleBorder(
           side: BorderSide(color: Colors.deepPurple, width: 2.0),
@@ -37,8 +46,10 @@ Widget writeButton(BuildContext context) {
     child: FittedBox(
       child: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => pages.UploadImg()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => pages.UploadImg()));
         },
         backgroundColor: Colors.deepPurpleAccent,
         shape: CircleBorder(),

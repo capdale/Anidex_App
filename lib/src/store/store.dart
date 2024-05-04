@@ -11,7 +11,7 @@ class Tabs extends ChangeNotifier {
 class ContentInfo extends ChangeNotifier {
   var indexNum = 0;
   var current = 0;
-  var imageList = [];
+  var gridImageList = [];
   changeIndexNum(int i) {
     indexNum = i;
   }
@@ -19,7 +19,14 @@ class ContentInfo extends ChangeNotifier {
     current = c;
     notifyListeners();
   }
-  setImageList(List<String> imgList) {
-    imageList = imgList;
+  setGridImageList(List<String> imgList) {
+    gridImageList = imgList;
+  }
+}
+
+class SelectImage extends ChangeNotifier {
+  var selectedImageUrl;
+  changeSelectedImg(String s) {
+    selectedImageUrl = s;
   }
 }

@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:anidex_app/src/widgets/_init.dart' as widgets;
+import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -11,6 +11,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return widgets.captureButton(context);
+    return Center(child: widgets.captureButton(context));
   }
 }

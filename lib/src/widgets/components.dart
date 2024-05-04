@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:anidex_app/src/store/_init.dart' as store;
 import 'package:provider/provider.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 TableRow settingTableRow(
     BuildContext context, String label, String value, Widget? route) {
@@ -47,8 +50,11 @@ Row contentRow(BuildContext context, String label, String value) {
       child: Container(
         alignment: Alignment.centerLeft,
         padding: padding,
-        child:
-            Text(label, style: TextStyle(fontSize: 22, color: Colors.black54)),
+        child: Text(label,
+            style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w500,
+                color: Colors.black54)),
       ),
     ),
     Flexible(
@@ -67,7 +73,11 @@ Widget contentCategory(BuildContext context) {
     data: ThemeData().copyWith(dividerColor: Colors.transparent),
     child: ExpansionTile(
       tilePadding: EdgeInsets.fromLTRB(20, 5, 15, 5),
-      title: Text('분류', style: TextStyle(fontSize: 22, color: Colors.black54)),
+      title: Text('분류',
+          style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w500,
+              color: Colors.black54)),
       initiallyExpanded: false,
       children: [
         categoryPadding('계', '동물계(Animalia)'),
@@ -91,7 +101,10 @@ Row categoryPadding(String key, String value) {
             padding: EdgeInsets.only(left: 20, top: 20, bottom: 20),
             child: Text(
               key,
-              style: TextStyle(fontSize: 20, color: Colors.black54),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54),
             )),
       ),
       Expanded(
@@ -109,7 +122,7 @@ Row categoryPadding(String key, String value) {
 
 Widget sliderWidget(BuildContext context, Function(int) onPageChangedCallback) {
   return CarouselSlider(
-      items: context.watch<store.ContentInfo>().imageList.map((imgLink) {
+      items: context.watch<store.ContentInfo>().gridImageList.map((imgLink) {
         return Builder(
           builder: (context) {
             return SizedBox(
@@ -139,7 +152,7 @@ Widget sliderIndicator(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.center,
       children: context
           .watch<store.ContentInfo>()
-          .imageList
+          .gridImageList
           .asMap()
           .entries
           .map((entry) {
@@ -162,7 +175,6 @@ Widget sliderIndicator(BuildContext context) {
     ),
   );
 }
-
 
 class FavoriteAndShare extends StatefulWidget {
   const FavoriteAndShare({super.key});
@@ -192,8 +204,7 @@ class _FavoriteAndShareState extends State<FavoriteAndShare> {
                   size: 40,
                 )),
             Text(
-                style:
-                TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 '좋아요 8,765개'),
             SizedBox(width: 4),
             SizedBox(
@@ -212,6 +223,203 @@ class _FavoriteAndShareState extends State<FavoriteAndShare> {
                 )),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ButtonData {
+  final Color buttonColor;
+  const ButtonData(this.buttonColor);
+}
+
+class DynamicAutoCompleteTags extends StatefulWidget {
+  const DynamicAutoCompleteTags({super.key});
+
+  @override
+  State<DynamicAutoCompleteTags> createState() =>
+      _DynamicAutoCompleteTagsState();
+}
+
+class _DynamicAutoCompleteTagsState extends State<DynamicAutoCompleteTags> {
+  late double _distanceToField;
+  late DynamicTagController<DynamicTagData<ButtonData>> _dynamicTagController;
+  final random = Random();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _distanceToField = MediaQuery.of(context).size.width;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _dynamicTagController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _dynamicTagController = DynamicTagController<DynamicTagData<ButtonData>>();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Column(
+        children: [
+          Autocomplete<DynamicTagData<ButtonData>>(
+            optionsViewBuilder: (context, onSelected, options) {
+              return Align(
+                alignment: Alignment.topCenter,
+                child: Material(
+                  elevation: 4.0,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxHeight: 200),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: options.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final DynamicTagData<ButtonData> option =
+                            options.elementAt(index);
+                        return TextButton(
+                          onPressed: () {
+                            onSelected(option);
+                          },
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              '#${option.tag}',
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 74, 137, 92),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              );
+            },
+            fieldViewBuilder:
+                (context, textEditingController, focusNode, onFieldSubmitted) {
+              return TextFieldTags<DynamicTagData<ButtonData>>(
+                textfieldTagsController: _dynamicTagController,
+                textEditingController: textEditingController,
+                focusNode: focusNode,
+                textSeparators: const [' ', ','],
+                letterCase: LetterCase.normal,
+                validator: (DynamicTagData<ButtonData> tag) {
+                  if (_dynamicTagController.getTags!
+                      .any((element) => element.tag == tag.tag)) {
+                    return '이미 입력된 태그입니다.';
+                  }
+                  return null;
+                },
+                inputFieldBuilder: (context, inputFieldValues) {
+                  return Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: TextField(
+                      controller: inputFieldValues.textEditingController,
+                      focusNode: inputFieldValues.focusNode,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        hintText: inputFieldValues.tags.isNotEmpty
+                            ? ''
+                            : "태그를 입력해 주세요.",
+                        hintStyle: TextStyle(fontSize: 20),
+                        errorText: inputFieldValues.error,
+                        prefixIconConstraints:
+                            BoxConstraints(maxWidth: _distanceToField * 0.74),
+                        prefixIcon: inputFieldValues.tags.isNotEmpty
+                            ? SingleChildScrollView(
+                                controller:
+                                    inputFieldValues.tagScrollController,
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                    children: inputFieldValues.tags
+                                        .map((DynamicTagData<ButtonData> tag) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20.0),
+                                      ),
+                                      color: tag.data.buttonColor,
+                                    ),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 5.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0, vertical: 5.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        InkWell(
+                                          child: Text(
+                                            tag.tag,
+                                            style: const TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 0, 0, 0)),
+                                          ),
+                                          onTap: () {
+                                            print("${tag.tag} selected");
+                                          },
+                                        ),
+                                        const SizedBox(width: 4.0),
+                                        InkWell(
+                                          child: const Icon(
+                                            Icons.cancel,
+                                            size: 14.0,
+                                            color: Color.fromARGB(255, 0, 0, 0),
+                                          ),
+                                          onTap: () {
+                                            inputFieldValues.onTagRemoved(tag);
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }).toList()),
+                              )
+                            : null,
+                      ),
+                      onChanged: (value) {
+                        final getColor = Color.fromARGB(
+                            random.nextInt(256),
+                            random.nextInt(256),
+                            random.nextInt(256),
+                            random.nextInt(256));
+                        final button = ButtonData(getColor);
+                        final tagData = DynamicTagData(value, button);
+                        inputFieldValues.onTagChanged(tagData);
+                      },
+                      onSubmitted: (value) {
+                        final getColor = Color.fromARGB(
+                            random.nextInt(256),
+                            random.nextInt(256),
+                            random.nextInt(256),
+                            random.nextInt(256));
+                        final button = ButtonData(getColor);
+                        final tagData = DynamicTagData(value, button);
+                        inputFieldValues.onTagSubmitted(tagData);
+                      },
+                    ),
+                  );
+                },
+              );
+            },
+            optionsBuilder: (TextEditingValue textEditingValue) {
+              return const Iterable<DynamicTagData<ButtonData>>.empty();
+            },
+            onSelected: (option) {
+              _dynamicTagController.onTagSubmitted(option);
+            },
+          ),
+        ],
       ),
     );
   }

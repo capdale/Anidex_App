@@ -144,7 +144,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(60);
 }
 
-AppBar uploadImgBar(BuildContext context) {
+AppBar uploadImgBar(BuildContext context, String selectedImgUrl) {
   return AppBar(
     leading: IconButton(
         onPressed: () {
@@ -155,12 +155,12 @@ AppBar uploadImgBar(BuildContext context) {
     title: Text(
       '사진 업로드',
       style: TextStyle(
-          color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
+          color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
     ),
     centerTitle: true,
     actions: [
       Container(
-        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         decoration: BoxDecoration(
           color: Colors.deepPurpleAccent,
           borderRadius: BorderRadius.circular(5)
@@ -168,12 +168,12 @@ AppBar uploadImgBar(BuildContext context) {
         child: TextButton(
             onPressed: () {
               Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => pages.UploadPost(),
+                  CupertinoPageRoute(builder: (context) => pages.UploadPost(selectedImgUrl: selectedImgUrl),
                   fullscreenDialog: false));
             },
             child: Text(
               '다음',
-              style: TextStyle(color: Color(0xFFF7F6FA), fontSize: 20, fontWeight: FontWeight.w500),
+              style: TextStyle(color: Color(0xFFF7F6FA), fontSize: 18, fontWeight: FontWeight.w500),
             )),
       )
     ],
@@ -191,21 +191,23 @@ AppBar uploadPostBar(BuildContext context) {
     title: Text(
       '새 게시물',
       style: TextStyle(
-          color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
+          color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
     ),
     centerTitle: true,
     actions: [
       Container(
-        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         decoration: BoxDecoration(
             color: Colors.deepPurpleAccent,
             borderRadius: BorderRadius.circular(5)
         ),
         child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
             child: Text(
               '등록',
-              style: TextStyle(color: Color(0xFFF7F6FA), fontSize: 20, fontWeight: FontWeight.w500),
+              style: TextStyle(color: Color(0xFFF7F6FA), fontSize: 18, fontWeight: FontWeight.w500),
             )),
       )
     ],
@@ -269,7 +271,7 @@ class TitleBar extends StatelessWidget {
                 'No. ${((indexNum ?? 0) + 1).toString().padLeft(3, '0')}'),
             SizedBox(width: 8),
             Text(
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Color(0xff9451D2)),
                 '까치'),
           ],
         ),

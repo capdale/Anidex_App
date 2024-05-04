@@ -10,29 +10,30 @@ class UploadImg extends StatefulWidget {
 }
 
 class _UploadImgState extends State<UploadImg> {
+  String selectedImgUrl = "";
+
+  void updateImgUrl(String newData) {
+    setState(() {
+      selectedImgUrl = newData;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: widgets.uploadImgBar(context),
-      body: views.UploadImgView()
+      appBar: widgets.uploadImgBar(context, selectedImgUrl),
+      body: views.UploadImgView(updateImgUrl: updateImgUrl)
     );
   }
 }
 
-
-class UploadPost extends StatefulWidget {
-  const UploadPost({super.key});
-
-  @override
-  State<UploadPost> createState() => _UploadPostState();
-}
-
-class _UploadPostState extends State<UploadPost> {
+class UploadPost extends StatelessWidget {
+  const UploadPost({super.key, this.selectedImgUrl});
+  final selectedImgUrl;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: widgets.uploadPostBar(context),
-        body: Text('body')
+        body: views.UploadPostView(selectedImgUrl: selectedImgUrl,)
     );
   }
 }

@@ -16,14 +16,13 @@ class _ContentViewState extends State<ContentView> {
   @override
   Widget build(BuildContext context) {
     context.read<store.ContentInfo>().changeIndexNum(widget.indexNum);
-    print(context.watch<store.ContentInfo>().indexNum);
     var imgList = [
       "https://picsum.photos/id/${context.watch<store.ContentInfo>().indexNum}/600/600",
       "https://picsum.photos/id/${context.watch<store.ContentInfo>().indexNum + 1}/600/600",
       "https://picsum.photos/id/${context.watch<store.ContentInfo>().indexNum + 2}/600/600",
       "https://picsum.photos/id/${context.watch<store.ContentInfo>().indexNum + 3}/600/600"
     ];
-    context.read<store.ContentInfo>().setImageList(imgList);
+    context.read<store.ContentInfo>().setGridImageList(imgList);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

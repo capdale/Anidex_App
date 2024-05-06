@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 var mainTheme = ThemeData(
+  primaryColor: Colors.deepPurpleAccent,
   elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5)

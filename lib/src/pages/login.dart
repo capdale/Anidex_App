@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:anidex_app/src/app.dart';
+import 'package:anidex_app/src/pages/_init.dart' as pages;
+import 'package:anidex_app/src/store/_init.dart' as store;
+import 'package:provider/provider.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -58,8 +60,10 @@ class Login extends StatelessWidget {
           SizedBox(height: 100),
           InkWell(
             onTap: () {
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                  builder: (context) => const App()), (route) => false);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => pages.EmailLogin()),
+              );
             },
             child: SizedBox(
               width: 160,

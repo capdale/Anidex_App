@@ -6,3 +6,4 @@ export 'settings.dart';
 export 'content.dart';
 export 'upload.dart';
 export 'login.dart';
+export 'email_login.dart';

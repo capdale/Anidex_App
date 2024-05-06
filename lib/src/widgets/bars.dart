@@ -111,14 +111,25 @@ class CustomedSearchBar extends StatelessWidget {
 
 //DefaultAppBar
 class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const DefaultAppBar({super.key, this.title, this.showActions = true});
+  const DefaultAppBar({super.key, this.title, this.barColor, this.showActions = true, this.elevation = true});
 
   final title;
+  final barColor;
   final bool showActions;
+  final bool elevation;
 
   @override
   Widget build(BuildContext context) {
+    var e = 0.0;
+    if (elevation) {
+      e = 1.0;
+    } else {
+      e = 0.0;
+    }
     return AppBar(
+      backgroundColor: barColor,
+      surfaceTintColor: barColor,
+      elevation: e,
       leading: IconButton(
           onPressed: () {
             Navigator.pop(context);

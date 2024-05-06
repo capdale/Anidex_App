@@ -70,7 +70,10 @@ class ChangeProfileButton extends StatelessWidget {
       padding: EdgeInsets.all(20),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            minimumSize: Size(MediaQuery.of(context).size.width, 50)),
+            minimumSize: Size(MediaQuery
+                .of(context)
+                .size
+                .width, 50)),
         onPressed: () => _showConfirmationDialog(context),
         child: Text(
           '${formName ?? ''} 변경',
@@ -87,7 +90,7 @@ class ChangeProfileButton extends StatelessWidget {
         return AlertDialog(
           backgroundColor: Colors.white,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           content: Text(
             "정말로 변경하시겠습니까?",
             style: TextStyle(fontSize: 18),
@@ -102,7 +105,7 @@ class ChangeProfileButton extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
               onPressed: () {
-                Navigator.of(context).pop(); // 팝업 닫기
+                Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
@@ -111,8 +114,7 @@ class ChangeProfileButton extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
               onPressed: () {
-                // '네' 버튼을 눌러도 아무 일도 일어나지 않게 설정
-                Navigator.of(context).pop(); // 옵셔널: 팝업 닫기
+                Navigator.of(context).pop();
               },
             ),
           ],

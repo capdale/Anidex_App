@@ -5,7 +5,8 @@ import 'src/theme/_init.dart' as style;
 import 'src/store/_init.dart' as store;
 
 void main() {
-  runApp(ChangeNotifierProvider(
-      create: (c) => store.Tabs(),
-      child: MaterialApp(theme: style.mainTheme, home: const Root())));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (create) => store.Tabs()),
+    ChangeNotifierProvider(create: (create) => store.UserEmail()),
+  ], child: MaterialApp(theme: style.mainTheme, home: const Root())));
 }

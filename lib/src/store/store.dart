@@ -24,9 +24,10 @@ class ContentInfo extends ChangeNotifier {
   }
 }
 
-class SelectImage extends ChangeNotifier {
-  var selectedImageUrl;
-  changeSelectedImg(String s) {
-    selectedImageUrl = s;
+
+class UserEmail extends ChangeNotifier {
+  var userEmail = '';
+  changeUserEmail(String s) {
+    userEmail = s;
   }
 }

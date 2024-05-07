@@ -52,7 +52,7 @@ class _EmailLoginState extends State<EmailLogin> {
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 50)),
                 onPressed: () {
-                  var key = false; // 가입된 이메일이냐?
+                  var key = true; // 가입된 이메일이냐?
                   isValid = _validateEmail(_emailController.text);
                   if (isValid) {
                     context
@@ -175,7 +175,7 @@ class _PasswordInputState extends State<PasswordInput> {
                       style: TextStyle(
                         fontSize: 20,
                       ))),
-              SizedBox(height: 140),
+              SizedBox(height: 30),
               Container(
                 alignment: Alignment.center,
                 child: TextButton(

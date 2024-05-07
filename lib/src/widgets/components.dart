@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:anidex_app/src/root.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:anidex_app/src/store/_init.dart' as store;
 import 'package:provider/provider.dart';
 import 'package:textfield_tags/textfield_tags.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:anidex_app/src/pages/_init.dart' as pages;
+import 'package:anidex_app/src/store/_init.dart' as store;
 
 TableRow settingTableRow(
     BuildContext context, String label, String value, Widget? route) {
@@ -230,6 +232,7 @@ class _FavoriteAndShareState extends State<FavoriteAndShare> {
 
 class ButtonData {
   final Color buttonColor;
+
   const ButtonData(this.buttonColor);
 }
 
@@ -423,4 +426,82 @@ class _DynamicAutoCompleteTagsState extends State<DynamicAutoCompleteTags> {
       ),
     );
   }
+}
+
+void showSignUpDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        content: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text(
+            "일치하는 메일 주소가 없습니다.\n이 메일 주소로 가입하시겠어요?",
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+        actions: <Widget>[
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.deepPurpleAccent),
+            child: Text(
+              "아니오",
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            child: Text(
+              "예",
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => pages.SignUp()));
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void showMessageDialog(BuildContext context, String message,
+    {bool popAll = false}) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          content: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(message, style: TextStyle(fontSize: 20)),
+          ),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    if (popAll) {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => const Root()),
+                              (route) => false);
+                    }
+                  },
+                  child: Text(
+                    '확인',
+                    style: TextStyle(fontSize: 16),
+                  )),
+            )
+          ],
+        );
+      });
 }

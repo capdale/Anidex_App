@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:anidex_app/src/store/_init.dart' as store;
+import 'package:anidex_app/src/providers/_init.dart' as providers;
 import 'package:anidex_app/src/widgets/_init.dart' as widgets;
 import 'package:anidex_app/src/pages/_init.dart' as pages;
 
@@ -14,7 +14,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    final tabIndex = context.watch<store.Tabs>().tab;
+    final tabIndex = context.watch<providers.Tabs>().tab;
 
     return Scaffold(
       appBar: tabIndex == 1 ? widgets.HomeAppBar() : null,

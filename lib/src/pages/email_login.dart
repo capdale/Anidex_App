@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:anidex_app/src/app.dart';
 import 'package:provider/provider.dart';
-import 'package:anidex_app/src/store/_init.dart' as store;
+import 'package:anidex_app/src/providers/_init.dart' as providers;
 import 'package:anidex_app/src/widgets/_init.dart' as widgets;
 
 class EmailLogin extends StatefulWidget {
@@ -56,7 +56,7 @@ class _EmailLoginState extends State<EmailLogin> {
                   isValid = _validateEmail(_emailController.text);
                   if (isValid) {
                     context
-                        .read<store.UserEmail>()
+                        .read<providers.UserEmail>()
                         .changeUserEmail(_emailController.text);
                     if (key) {
                       Navigator.push(
@@ -218,7 +218,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    final userEmail = context.read<store.UserEmail>().userEmail;
+    final userEmail = context.read<providers.UserEmail>().userEmail;
     return Scaffold(
       appBar: widgets.DefaultAppBar(
         title: '가입하기',

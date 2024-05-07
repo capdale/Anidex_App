@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:anidex_app/src/store/_init.dart' as store;
+import 'package:anidex_app/src/providers/_init.dart' as providers;
 import 'package:anidex_app/src/widgets/_init.dart' as widgets;
 
 class ContentView extends StatefulWidget {
@@ -15,21 +15,21 @@ class ContentView extends StatefulWidget {
 class _ContentViewState extends State<ContentView> {
   @override
   Widget build(BuildContext context) {
-    context.read<store.ContentInfo>().changeIndexNum(widget.indexNum);
+    context.read<providers.ContentInfo>().changeIndexNum(widget.indexNum);
     var imgList = [
-      "https://picsum.photos/id/${context.watch<store.ContentInfo>().indexNum}/600/600",
-      "https://picsum.photos/id/${context.watch<store.ContentInfo>().indexNum + 1}/600/600",
-      "https://picsum.photos/id/${context.watch<store.ContentInfo>().indexNum + 2}/600/600",
-      "https://picsum.photos/id/${context.watch<store.ContentInfo>().indexNum + 3}/600/600"
+      "https://picsum.photos/id/${context.watch<providers.ContentInfo>().indexNum}/600/600",
+      "https://picsum.photos/id/${context.watch<providers.ContentInfo>().indexNum + 1}/600/600",
+      "https://picsum.photos/id/${context.watch<providers.ContentInfo>().indexNum + 2}/600/600",
+      "https://picsum.photos/id/${context.watch<providers.ContentInfo>().indexNum + 3}/600/600"
     ];
-    context.read<store.ContentInfo>().setGridImageList(imgList);
+    context.read<providers.ContentInfo>().setGridImageList(imgList);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(height: 10),
           widgets.TitleBar(
-            indexNum: context.watch<store.ContentInfo>().indexNum,
+            indexNum: context.watch<providers.ContentInfo>().indexNum,
           ),
           SizedBox(height: 5),
           SizedBox(
@@ -38,7 +38,7 @@ class _ContentViewState extends State<ContentView> {
                 children: [
                   widgets.sliderWidget(context, (newIndex) {
                     setState(() {
-                      context.read<store.ContentInfo>().changeCurrent(newIndex);
+                      context.read<providers.ContentInfo>().changeCurrent(newIndex);
                     });
                   }),
                   widgets.sliderIndicator(context),

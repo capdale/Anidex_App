@@ -11,6 +11,7 @@ class CommentPanel extends StatefulWidget {
 }
 
 class _CommentPanelState extends State<CommentPanel> {
+  final commentOwn = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,12 +37,7 @@ class _CommentPanelState extends State<CommentPanel> {
                 ],
               ),
             ),
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.more_horiz,
-                  size: 30,
-                ))
+            widgets.commentMenu(context, 30, commentOwn),
           ]),
           Container(
             padding: EdgeInsets.all(6.0),

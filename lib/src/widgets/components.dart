@@ -124,7 +124,8 @@ Row categoryPadding(String key, String value) {
 
 Widget sliderWidget(BuildContext context, Function(int) onPageChangedCallback) {
   return CarouselSlider(
-      items: context.watch<providers.ContentInfo>().gridImageList.map((imgLink) {
+      items:
+          context.watch<providers.ContentInfo>().gridImageList.map((imgLink) {
         return Builder(
           builder: (context) {
             return SizedBox(
@@ -493,7 +494,7 @@ void showMessageDialog(BuildContext context, String message,
                     if (popAll) {
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => const Root()),
-                              (route) => false);
+                          (route) => false);
                     }
                   },
                   child: Text(
@@ -505,3 +506,208 @@ void showMessageDialog(BuildContext context, String message,
         );
       });
 }
+
+Widget articleMenu(BuildContext context, double iconSize, bool articleOwn) {
+  return Center(
+    child: PopupMenuButton(
+      surfaceTintColor: Colors.white,
+      iconSize: iconSize,
+      itemBuilder: (context) {
+        return articleOwn
+            ? [
+                PopupMenuItem(
+                    child: Text(
+                      '수정',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    onTap: () {
+                      print('수정 선택');
+                    }),
+                PopupMenuItem(
+                  child: Text(
+                    '삭제',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onTap: () {
+                    showDeleteDialog(context, '게시글');
+                  },
+                ),
+              ]
+            : [
+                PopupMenuItem(
+                    child: Text(
+                      '신고',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    onTap: () {
+                      print('신고 선택');
+                    }),
+              ];
+      },
+    ),
+  );
+}
+
+Widget commentMenu(BuildContext context, double iconSize, bool commentOwn) {
+  return Center(
+    child: PopupMenuButton(
+      surfaceTintColor: Colors.white,
+      icon: Icon(Icons.more_horiz),
+      iconSize: iconSize,
+      itemBuilder: (context) {
+        return commentOwn
+            ? [
+                PopupMenuItem(
+                  child: Text(
+                    '삭제',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onTap: () {
+                    showDeleteDialog(context, '댓글');
+                  },
+                ),
+              ]
+            : [
+                PopupMenuItem(
+                    child: Text(
+                      '신고',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    onTap: () {
+                      showReportDialog(context);
+                    }),
+              ];
+      },
+    ),
+  );
+}
+
+void showDeleteDialog(BuildContext context, String what) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10) // Set the border radius here
+          ),
+          title: Text('삭제된 $what은 복구할 수 없습니다. 정말로 삭제하시겠습니까?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('취소', style: TextStyle(fontSize: 22)),
+              onPressed: () {
+                print('Deleting post');
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: Text(
+                '확인',
+                style: TextStyle(fontSize: 22),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      });
+}
+
+class ReportDialog extends StatefulWidget {
+  const ReportDialog({super.key});
+
+  @override
+  State<ReportDialog> createState() => _ReportDialogState();
+}
+
+class _ReportDialogState extends State<ReportDialog> {
+  String? selectedReportType;
+  List<String> reportTypes = ['부적절한 내용', '욕설/비방', '광고', '기타'];
+  bool addWhy = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10) // Set the border radius here
+          ),
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
+      content: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '신고 사유를 선택해 주세요.',
+              style: TextStyle(fontSize: 22),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            DropdownButton<String>(
+              isExpanded: true,
+              value: selectedReportType,
+              items: reportTypes.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value, style: TextStyle(fontSize: 22)),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedReportType = newValue;
+                  if (selectedReportType == '기타') {
+                    addWhy = true;
+                  }
+                });
+              },
+            ),
+            SizedBox(height: 5,),
+            addWhy ? TextField(
+              decoration: InputDecoration(
+                hintText: '내용 입력',
+                hintStyle: TextStyle(fontSize: 20),
+                border: OutlineInputBorder()
+              ),
+              maxLines: 4,
+              style: TextStyle(fontSize: 20),
+            ) : Container()
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            '취소',
+            style: TextStyle(fontSize: 22),
+          ),
+          onPressed: () {
+            Navigator.of(context)
+                .pop(); // Close the dialog without doing anything
+          },
+        ),
+        TextButton(
+          child: Text(
+            '신고하기',
+            style: TextStyle(fontSize: 22),
+          ),
+          onPressed: () {
+            print(
+                'Reporting as: $selectedReportType'); // Handle the report action
+            Navigator.of(context).pop(); // Close the dialog
+          },
+        ),
+      ],
+    );
+  }
+}
+
+void showReportDialog(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ReportDialog();
+      });
+}
+

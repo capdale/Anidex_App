@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:anidex_app/src/providers/_init.dart' as providers;
 import 'package:anidex_app/src/pages/_init.dart' as pages;
+import 'package:anidex_app/src/widgets/_init.dart' as widgets;
 
 // HomeAppBar
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -117,6 +118,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final barColor;
   final bool showActions;
   final bool elevation;
+  final bool articleOwn = true;
 
   @override
   Widget build(BuildContext context) {
@@ -144,8 +146,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       actions: showActions
           ? [
-              IconButton(
-                  onPressed: () {}, icon: Icon(Icons.more_vert), iconSize: 30)
+              widgets.articleMenu(context, 30, articleOwn),
             ]
           : [],
     );

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:anidex_app/src/pages/_init.dart' as pages;
-import 'package:anidex_app/src/store/_init.dart' as store;
+import 'package:anidex_app/src/providers/_init.dart' as providers;
 
 TableRow settingTableRow(
     BuildContext context, String label, String value, Widget? route) {
@@ -124,7 +124,7 @@ Row categoryPadding(String key, String value) {
 
 Widget sliderWidget(BuildContext context, Function(int) onPageChangedCallback) {
   return CarouselSlider(
-      items: context.watch<store.ContentInfo>().gridImageList.map((imgLink) {
+      items: context.watch<providers.ContentInfo>().gridImageList.map((imgLink) {
         return Builder(
           builder: (context) {
             return SizedBox(
@@ -153,7 +153,7 @@ Widget sliderIndicator(BuildContext context) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: context
-          .watch<store.ContentInfo>()
+          .watch<providers.ContentInfo>()
           .gridImageList
           .asMap()
           .entries
@@ -168,7 +168,7 @@ Widget sliderIndicator(BuildContext context) {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.white.withOpacity(
-                    context.watch<store.ContentInfo>().current == entry.key
+                    context.watch<providers.ContentInfo>().current == entry.key
                         ? 0.9
                         : 0.4),
               ),

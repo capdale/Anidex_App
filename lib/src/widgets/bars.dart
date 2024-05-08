@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:anidex_app/src/store/_init.dart' as store;
+import 'package:anidex_app/src/providers/_init.dart' as providers;
 import 'package:anidex_app/src/pages/_init.dart' as pages;
 
 // HomeAppBar
@@ -54,9 +54,9 @@ class _BotNaviBarState extends State<BotNaviBar> {
       child: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        currentIndex: context.watch<store.Tabs>().tab,
+        currentIndex: context.watch<providers.Tabs>().tab,
         onTap: (i) {
-          context.read<store.Tabs>().changePage(i);
+          context.read<providers.Tabs>().changePage(i);
         },
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Index'),

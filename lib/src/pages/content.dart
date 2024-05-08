@@ -1,4 +1,4 @@
-import 'package:anidex_app/src/store/_init.dart' as store;
+import 'package:anidex_app/src/providers/_init.dart' as providers;
 import 'package:anidex_app/src/widgets/_init.dart' as widgets;
 import 'package:anidex_app/src/views/_init.dart' as views;
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class _ContentState extends State<Content> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => store.ContentInfo(),
+      create: (context) => providers.ContentInfo(),
       child: Scaffold(
           appBar: widgets.DefaultAppBar(
             showActions: false,

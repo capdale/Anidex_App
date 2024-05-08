@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:anidex_app/src/pages/_init.dart' as pages;
-import 'package:anidex_app/src/store/_init.dart' as store;
-import 'package:provider/provider.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});

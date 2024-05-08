@@ -158,7 +158,7 @@ class _PasswordInputState extends State<PasswordInput> {
                   style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 50)),
                   onPressed: () {
-                    var pwdRight = false;
+                    var pwdRight = true;
                     if (pwdRight) {
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => const App()),

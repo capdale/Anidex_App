@@ -664,14 +664,19 @@ class _ReportDialogState extends State<ReportDialog> {
               },
             ),
             SizedBox(height: 5,),
-            addWhy ? TextField(
-              decoration: InputDecoration(
-                hintText: '내용 입력',
-                hintStyle: TextStyle(fontSize: 20),
-                border: OutlineInputBorder()
+            addWhy ? SizedBox(
+              height: 200,
+              width: 300,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: '내용 입력',
+                  hintStyle: TextStyle(fontSize: 20),
+                  border: OutlineInputBorder()
+                ),
+                maxLines: 4,
+                maxLength: 60,
+                style: TextStyle(fontSize: 20),
               ),
-              maxLines: 4,
-              style: TextStyle(fontSize: 20),
             ) : Container()
           ],
         ),

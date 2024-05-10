@@ -11,7 +11,6 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
-    final imageSize = MediaQuery.of(context).size.width / 3;
     var nickname = "user1234";
     var email = "user1234@naver.com";
     var introduction = "안녕하세요, 만나서 반갑습니다.";
@@ -24,10 +23,7 @@ class _ProfileViewState extends State<ProfileView> {
             minWidth: MediaQuery.of(context).size.width,
           ),
           child: Center(
-            child: Icon(
-              Icons.account_circle,
-              size: imageSize,
-            ),
+            child: widgets.ProfileImage()
           ),
         ),
         widgets.profileTable(context, nickname, email, introduction)

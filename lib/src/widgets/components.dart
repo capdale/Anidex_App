@@ -8,7 +8,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:anidex_app/src/pages/_init.dart' as pages;
 import 'package:anidex_app/src/providers/_init.dart' as providers;
 
-TableRow settingTableRow(
+TableRow profileTableRow(
     BuildContext context, String label, String value, Widget? route) {
   return TableRow(
     children: [

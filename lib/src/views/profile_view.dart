@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:anidex_app/src/widgets/_init.dart' as widgets;
 
-class SettingsView extends StatefulWidget {
-  const SettingsView({super.key});
+class ProfileView extends StatefulWidget {
+  const ProfileView({super.key});
 
   @override
-  State<SettingsView> createState() => _SettingsViewState();
+  State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _SettingsViewState extends State<SettingsView> {
+class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     final imageSize = MediaQuery.of(context).size.width / 3;
@@ -30,7 +30,7 @@ class _SettingsViewState extends State<SettingsView> {
             ),
           ),
         ),
-        widgets.settingTable(context, nickname, email, introduction)
+        widgets.profileTable(context, nickname, email, introduction)
       ],
     );
   }

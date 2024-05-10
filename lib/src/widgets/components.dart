@@ -190,6 +190,9 @@ class FavoriteAndShare extends StatefulWidget {
 }
 
 class _FavoriteAndShareState extends State<FavoriteAndShare> {
+  var likeNum = 0;
+  bool like = false;
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -204,14 +207,27 @@ class _FavoriteAndShareState extends State<FavoriteAndShare> {
           spacing: 8.0,
           children: <Widget>[
             IconButton(
-                onPressed: () {},
-                icon: Icon(
+                onPressed: () {
+                  like = !like;
+                  setState(() {
+                    if (like) {
+                      likeNum += 1;
+                    } else {
+                      likeNum -= 1;
+                    }
+                  });
+                },
+                icon: !like ? Icon(
                   Icons.favorite_outline,
+                  size: 40,
+                ) : Icon(
+                  Icons.favorite_outlined,
+                  color: Colors.redAccent,
                   size: 40,
                 )),
             Text(
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                '좋아요 8,765개'),
+                '좋아요 $likeNum개'),
             SizedBox(width: 4),
             SizedBox(
               width: 15,

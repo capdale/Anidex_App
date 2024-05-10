@@ -57,15 +57,24 @@ class CaptureScreenState extends State<CaptureScreen> {
       var cropSize = min(properties.width!, properties.height!);
       int offsetX = (properties.width! - cropSize) ~/ 2;
       int offsetY = (properties.height! - cropSize) ~/ 2;
-      var imageFile = await FlutterNativeImage.cropImage(
+      final imageFile = await FlutterNativeImage.cropImage(
           tempfile.path, offsetX, offsetY, cropSize, cropSize);
-
+      await _analyzePicture(imageFile);
       Directory directory = Directory('storage/emulated/0/DCIM/MyImages');
       await Directory(directory.path).create(recursive: true);
       await File(imageFile.path).copy('${directory.path}/${tempfile.name}');
     } catch (e) {
       print('Error taking picture: $e');
     }
+  }
+
+  Future<void> _analyzePicture(imageFile) async {
+    // 1. 등재되지 않은 동물이면 자동 등재
+
+    // 2. 등재된 동물이면 사진 추가
+
+    // 3. 인식 실패
+    showFailDialog(context, imageFile);
   }
 
   @override
@@ -122,13 +131,11 @@ class CaptureScreenState extends State<CaptureScreen> {
                 color: Color.fromRGBO(0, 0, 0, 0.8),
                 child: Padding(
                     padding: const EdgeInsets.all(15.0),
-                    // 버튼 클릭 이벤트 정의를 위한 GestureDetector
                     child: GestureDetector(
                       onTap: () {
-                        // 사진 찍기 함수 호출
+                        controller.pausePreview();
                         _takePicture();
                       },
-                      // 버튼으로 표시될 Icon
                       child: const Icon(
                         Icons.camera_enhance_rounded,
                         size: 80,
@@ -140,4 +147,106 @@ class CaptureScreenState extends State<CaptureScreen> {
       ),
     );
   }
+}
+
+
+void showFailDialog(BuildContext context, imageFile) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        content: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text(
+            "인식에 실패하였습니다.\n동물을 제보하시겠습니까?",
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+        actions: <Widget>[
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.deepPurpleAccent),
+            child: Text(
+              "아니오",
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            child: Text(
+              "예",
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              showAnimalReportDialog(context, imageFile);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
+void showAnimalReportDialog(BuildContext context, imageFile) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      final controller = TextEditingController();
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        content: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: SizedBox(
+            height: 120,
+            width: 80,
+            child: Column(
+              children: [Text(
+                "본인이 생각하는 동물의 이름을 제보해 주세요.",
+                style: TextStyle(fontSize: 20),
+              ), TextField(
+                controller: controller,
+                maxLines: 1,
+                style: TextStyle(fontSize: 20),
+              )]
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.deepPurpleAccent),
+            child: Text(
+              "취소",
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            child: Text(
+              "제출",
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              print(controller.text);
+              print(imageFile);
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

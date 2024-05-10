@@ -22,9 +22,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
           icon: Icon(Icons.account_circle),
           iconSize: 50),
-      actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.settings), iconSize: 50)
-      ],
     );
   }
 

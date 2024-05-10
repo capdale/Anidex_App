@@ -17,7 +17,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             Navigator.push(
                 context,
                 CupertinoPageRoute(
-                    builder: (context) => pages.Settings(),
+                    builder: (context) => pages.Profile(),
                     fullscreenDialog: true));
           },
           icon: Icon(Icons.account_circle),

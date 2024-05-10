@@ -62,20 +62,20 @@ class _CommentPanelState extends State<CommentPanel> {
   }
 }
 
-Widget settingTable(
+Widget profileTable(
     BuildContext context, String nickname, String email, String introduction) {
   return Container(
     decoration: theme.tableDecoration(2, 5),
     margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
     child: Table(
       children: [
-        widgets.settingTableRow(
+        widgets.profileTableRow(
             context, '닉네임', nickname, views.ChangeNickName(nickname: nickname)),
-        widgets.settingTableRow(context, '대표 이메일', 'User1234@naver.com',
+        widgets.profileTableRow(context, '대표 이메일', 'User1234@naver.com',
             views.ChangeEmail(email: email)),
-        widgets.settingTableRow(context, '연동된 소셜 계정', 'User1234', null),
+        widgets.profileTableRow(context, '연동된 소셜 계정', 'User1234', null),
         // Placeholder for onTap
-        widgets.settingTableRow(context, '소개', introduction,
+        widgets.profileTableRow(context, '소개', introduction,
             views.ChangeIntroduction(introduction: introduction)),
       ],
     ),

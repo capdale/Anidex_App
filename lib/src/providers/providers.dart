@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 
 class Tabs extends ChangeNotifier {
@@ -29,5 +30,16 @@ class UserEmail extends ChangeNotifier {
   var userEmail = '';
   changeUserEmail(String s) {
     userEmail = s;
+  }
+}
+
+class CameraProvider with ChangeNotifier {
+  CameraDescription? _camera;
+
+  CameraDescription? get camera => _camera;
+
+  void setCamera(CameraDescription camera) {
+    _camera = camera;
+    notifyListeners();
   }
 }

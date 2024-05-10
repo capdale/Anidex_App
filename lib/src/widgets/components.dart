@@ -1,14 +1,17 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:anidex_app/src/root.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:anidex_app/src/pages/_init.dart' as pages;
 import 'package:anidex_app/src/providers/_init.dart' as providers;
 
-TableRow settingTableRow(
+TableRow profileTableRow(
     BuildContext context, String label, String value, Widget? route) {
   return TableRow(
     children: [
@@ -187,6 +190,9 @@ class FavoriteAndShare extends StatefulWidget {
 }
 
 class _FavoriteAndShareState extends State<FavoriteAndShare> {
+  var likeNum = 0;
+  bool like = false;
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -201,14 +207,27 @@ class _FavoriteAndShareState extends State<FavoriteAndShare> {
           spacing: 8.0,
           children: <Widget>[
             IconButton(
-                onPressed: () {},
-                icon: Icon(
+                onPressed: () {
+                  like = !like;
+                  setState(() {
+                    if (like) {
+                      likeNum += 1;
+                    } else {
+                      likeNum -= 1;
+                    }
+                  });
+                },
+                icon: !like ? Icon(
                   Icons.favorite_outline,
+                  size: 40,
+                ) : Icon(
+                  Icons.favorite_outlined,
+                  color: Colors.redAccent,
                   size: 40,
                 )),
             Text(
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                '좋아요 8,765개'),
+                '좋아요 $likeNum개'),
             SizedBox(width: 4),
             SizedBox(
               width: 15,
@@ -588,8 +607,9 @@ void showDeleteDialog(BuildContext context, String what) {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10) // Set the border radius here
-          ),
+              borderRadius:
+                  BorderRadius.circular(10) // Set the border radius here
+              ),
           title: Text('삭제된 $what은 복구할 수 없습니다. 정말로 삭제하시겠습니까?'),
           actions: <Widget>[
             TextButton(
@@ -663,16 +683,24 @@ class _ReportDialogState extends State<ReportDialog> {
                 });
               },
             ),
-            SizedBox(height: 5,),
-            addWhy ? TextField(
-              decoration: InputDecoration(
-                hintText: '내용 입력',
-                hintStyle: TextStyle(fontSize: 20),
-                border: OutlineInputBorder()
-              ),
-              maxLines: 4,
-              style: TextStyle(fontSize: 20),
-            ) : Container()
+            SizedBox(
+              height: 5,
+            ),
+            addWhy
+                ? SizedBox(
+                    height: 200,
+                    width: 300,
+                    child: TextField(
+                      decoration: InputDecoration(
+                          hintText: '내용 입력',
+                          hintStyle: TextStyle(fontSize: 20),
+                          border: OutlineInputBorder()),
+                      maxLines: 4,
+                      maxLength: 60,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  )
+                : Container()
           ],
         ),
       ),
@@ -711,3 +739,43 @@ void showReportDialog(BuildContext context) {
       });
 }
 
+class ProfileImage extends StatefulWidget {
+  const ProfileImage({super.key});
+
+  @override
+  State<ProfileImage> createState() => _ProfileImageState();
+}
+
+class _ProfileImageState extends State<ProfileImage> {
+  XFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Stack(
+        children: <Widget>[
+          InkWell(
+            onTap: () {
+              takePhoto(ImageSource.gallery);
+            },
+            child: CircleAvatar(
+              radius: 80,
+              backgroundColor: Colors.white,
+              backgroundImage: _imageFile == null
+                  ? AssetImage('assets/images/default_profile.png')
+                  : FileImage(File(_imageFile!.path)) as ImageProvider,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  takePhoto(ImageSource source) async {
+    final XFile? pickedFile = await _picker.pickImage(source: source);
+    setState(() {
+      _imageFile = pickedFile;
+    });
+  }
+}

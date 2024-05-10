@@ -5,15 +5,15 @@ import 'package:provider/provider.dart';
 import 'src/theme/_init.dart' as style;
 import 'src/providers/_init.dart' as providers;
 
-late List<CameraDescription> _cameras;
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  _cameras = await availableCameras();
+  final cameras = await availableCameras();
+  final firstCamera = cameras.first;
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (create) => providers.Tabs()),
     ChangeNotifierProvider(create: (create) => providers.UserEmail()),
+    ChangeNotifierProvider(create: (create) => providers.CameraProvider()..setCamera(firstCamera)),
   ], child: MaterialApp(theme: style.mainTheme, home: const Root())));
 }

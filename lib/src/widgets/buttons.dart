@@ -1,8 +1,14 @@
+import 'package:anidex_app/src/providers/_init.dart' as providers;
+
 import 'package:flutter/material.dart';
 import 'package:anidex_app/src/pages/_init.dart' as pages;
+import 'package:anidex_app/src/views/_init.dart' as views;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 Widget captureButton(BuildContext context) {
+  final firstCamera = context.read<providers.CameraProvider>().camera;
+
   return Center(
     child: Transform.scale(
       scale: 6.0,
@@ -10,9 +16,16 @@ Widget captureButton(BuildContext context) {
         onPressed: () async {
           var status = await Permission.camera.status;
           if (status.isGranted) {
-            print('허락됨');
+            if (context.mounted) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => views.CaptureScreen(
+                          camera: firstCamera!,
+                        )),
+              );
+            }
           } else if (status.isDenied) {
-            print('거절됨');
             Permission.camera.request();
           }
         },
@@ -46,10 +59,8 @@ Widget writeButton(BuildContext context) {
     child: FittedBox(
       child: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => pages.UploadImg()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => pages.UploadImg()));
         },
         backgroundColor: Colors.deepPurpleAccent,
         shape: CircleBorder(),
@@ -70,10 +81,7 @@ class ChangeProfileButton extends StatelessWidget {
       padding: EdgeInsets.all(20),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            minimumSize: Size(MediaQuery
-                .of(context)
-                .size
-                .width, 50)),
+            minimumSize: Size(MediaQuery.of(context).size.width, 50)),
         onPressed: () => _showConfirmationDialog(context),
         child: Text(
           '${formName ?? ''} 변경',
@@ -90,7 +98,7 @@ class ChangeProfileButton extends StatelessWidget {
         return AlertDialog(
           backgroundColor: Colors.white,
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           content: Text(
             "정말로 변경하시겠습니까?",
             style: TextStyle(fontSize: 18),

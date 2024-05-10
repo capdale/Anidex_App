@@ -3,6 +3,7 @@ import 'package:anidex_app/src/app.dart';
 import 'package:anidex_app/src/pages/_init.dart' as pages;
 
 class Root extends StatelessWidget {
+
   const Root({super.key});
 
   @override

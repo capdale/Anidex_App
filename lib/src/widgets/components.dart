@@ -217,14 +217,16 @@ class _FavoriteAndShareState extends State<FavoriteAndShare> {
                     }
                   });
                 },
-                icon: !like ? Icon(
-                  Icons.favorite_outline,
-                  size: 40,
-                ) : Icon(
-                  Icons.favorite_outlined,
-                  color: Colors.redAccent,
-                  size: 40,
-                )),
+                icon: !like
+                    ? Icon(
+                        Icons.favorite_outline,
+                        size: 40,
+                      )
+                    : Icon(
+                        Icons.favorite_outlined,
+                        color: Colors.redAccent,
+                        size: 40,
+                      )),
             Text(
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 '좋아요 $likeNum개'),
@@ -753,21 +755,36 @@ class _ProfileImageState extends State<ProfileImage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Stack(
-        children: <Widget>[
-          InkWell(
-            onTap: () {
-              takePhoto(ImageSource.gallery);
-            },
-            child: CircleAvatar(
-              radius: 80,
-              backgroundColor: Colors.white,
-              backgroundImage: _imageFile == null
-                  ? AssetImage('assets/images/default_profile.png')
-                  : FileImage(File(_imageFile!.path)) as ImageProvider,
+      child: Padding(
+        padding: const EdgeInsets.all(40.0),
+        child: Column(
+          children: [
+            InkWell(
+              onTap: () {
+                takePhoto(ImageSource.gallery);
+              },
+              child: CircleAvatar(
+                radius: 80,
+                backgroundColor: Colors.white,
+                backgroundImage: _imageFile == null
+                    ? AssetImage('assets/images/default_profile.png')
+                    : FileImage(File(_imageFile!.path)) as ImageProvider,
+              ),
             ),
-          ),
-        ],
+            SizedBox(height: 10),
+            TextButton(
+                onPressed: () {
+                  _imageFile = null;
+                },
+                child: Text(
+                  '기본 프로필로 변경',
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 18,
+                      color: Colors.grey),
+                ))
+          ],
+        ),
       ),
     );
   }

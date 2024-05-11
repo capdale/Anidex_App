@@ -20,20 +20,19 @@ class _UploadImgState extends State<UploadImg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: widgets.uploadImgBar(context, selectedImgUrl),
-      body: views.UploadImgView(updateImgUrl: updateImgUrl)
+      appBar: widgets.uploadImgBar(context),
+      body: views.UploadImgView()
     );
   }
 }
 
 class UploadPost extends StatelessWidget {
-  const UploadPost({super.key, this.selectedImgUrl});
-  final selectedImgUrl;
+  const UploadPost({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: widgets.uploadPostBar(context),
-        body: views.UploadPostView(selectedImgUrl: selectedImgUrl,)
+        body: views.UploadPostView()
     );
   }
 }

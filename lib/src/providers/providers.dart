@@ -43,3 +43,13 @@ class CameraProvider with ChangeNotifier {
     notifyListeners();
   }
 }
+
+class SelectImage with ChangeNotifier {
+  var selectedImageId = 0;
+  var selectedImageUrl = "https://picsum.photos/id/0/600/600";
+  changeSelectedImage(int i) {
+    selectedImageId = i;
+    selectedImageUrl = "https://picsum.photos/id/$selectedImageId/600/600";
+    notifyListeners();
+  }
+}

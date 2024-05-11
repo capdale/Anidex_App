@@ -153,7 +153,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(60);
 }
 
-AppBar uploadImgBar(BuildContext context, String selectedImgUrl) {
+AppBar uploadImgBar(BuildContext context) {
   return AppBar(
     leading: IconButton(
         onPressed: () {
@@ -177,7 +177,7 @@ AppBar uploadImgBar(BuildContext context, String selectedImgUrl) {
         child: TextButton(
             onPressed: () {
               Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => pages.UploadPost(selectedImgUrl: selectedImgUrl),
+                  CupertinoPageRoute(builder: (context) => pages.UploadPost(),
                   fullscreenDialog: false));
             },
             child: Text(

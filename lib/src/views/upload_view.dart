@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:anidex_app/src/widgets/_init.dart' as widgets;
+import 'package:anidex_app/src/views/_init.dart' as views;
+import 'package:anidex_app/src/providers/_init.dart' as providers;
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 class UploadImgView extends StatefulWidget {
-  final Function(String) updateImgUrl;
-  UploadImgView({super.key, required this.updateImgUrl});
+  UploadImgView({super.key});
 
   @override
   State<UploadImgView> createState() => _UploadImgViewState();
 }
 
 class _UploadImgViewState extends State<UploadImgView> {
-  String? _selectedImageUrl;
-  int? _selectedIndex = 0;
 
   Widget _imagePreview(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
+    final selectedImageId = context.watch<providers.SelectImage>().selectedImageId;
     return SizedBox(
         width: width,
         height: width,
-        child: _selectedImageUrl == null
-            ? Image.network(
-                "https://picsum.photos/id/0/${width.toInt()}/${width.toInt()}")
-            : Image.network(_selectedImageUrl!));
+        child: Image.network(
+                "https://picsum.photos/id/$selectedImageId/${width.toInt()}/${width.toInt()}")
+            );
   }
 
-  Widget _header() {
+  Widget _header(BuildContext context) {
+    final firstCamera = context.read<providers.CameraProvider>().camera;
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -36,21 +38,43 @@ class _UploadImgViewState extends State<UploadImgView> {
           ),
         ),
         Container(
-            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: const Color(0xff808080),
+              color: Colors.grey,
             ),
-            child: Icon(
-              Icons.camera_alt_outlined,
-              color: Color(0xffF7F6FA),
-            ))
+            child: IconButton(
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  surfaceTintColor: Colors.transparent,
+                ),
+                onPressed: () async {
+                  var status = await Permission.camera.status;
+                  if (status.isGranted) {
+                    if (context.mounted) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => views.CaptureScreen(
+                                  camera: firstCamera!,
+                                )),
+                      );
+                    }
+                  } else if (status.isDenied) {
+                    Permission.camera.request();
+                  }
+                },
+                icon: Icon(
+                  size: 30,
+                  Icons.camera_alt_outlined,
+                  color: Color(0xffF7F6FA),
+                )))
       ]),
     );
   }
 
   Widget _imageSelectList(BuildContext context) {
     var width = MediaQuery.of(context).size.width.toInt();
+    var selectedImageId = context.watch<providers.SelectImage>().selectedImageId;
     return GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -64,13 +88,11 @@ class _UploadImgViewState extends State<UploadImgView> {
           return GestureDetector(
             onTap: () {
               setState(() {
-                _selectedImageUrl = imageUrl;
-                _selectedIndex = index;
+                context.read<providers.SelectImage>().changeSelectedImage(index);
               });
-              widget.updateImgUrl(imageUrl);
             },
             child: Opacity(
-              opacity: _selectedIndex == index ? 0.6 : 1.0,
+              opacity: selectedImageId == index ? 0.6 : 1.0,
               child: Image(
                 alignment: Alignment.center,
                 image: NetworkImage(imageUrl),
@@ -86,7 +108,7 @@ class _UploadImgViewState extends State<UploadImgView> {
       child: Column(
         children: [
           _imagePreview(context),
-          _header(),
+          _header(context),
           _imageSelectList(context),
         ],
       ),
@@ -95,10 +117,12 @@ class _UploadImgViewState extends State<UploadImgView> {
 }
 
 class UploadPostView extends StatelessWidget {
-  const UploadPostView({super.key, this.selectedImgUrl});
-  final selectedImgUrl;
+  const UploadPostView({super.key});
+
+
   @override
   Widget build(BuildContext context) {
+    final selectedImageUrl = context.watch<providers.SelectImage>().selectedImageUrl;
     var width = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Column(
@@ -106,8 +130,7 @@ class UploadPostView extends StatelessWidget {
           SizedBox(
             width: width,
             height: width,
-            child: Image.network(
-                selectedImgUrl),
+            child: Image.network(selectedImageUrl),
           ),
           Container(
             margin: EdgeInsets.all(20),

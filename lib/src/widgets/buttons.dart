@@ -1,5 +1,5 @@
 import 'package:anidex_app/src/providers/_init.dart' as providers;
-
+import 'package:anidex_app/src/Root.dart';
 import 'package:flutter/material.dart';
 import 'package:anidex_app/src/pages/_init.dart' as pages;
 import 'package:anidex_app/src/views/_init.dart' as views;
@@ -130,4 +130,61 @@ class ChangeProfileButton extends StatelessWidget {
       },
     );
   }
+}
+
+Widget signOutButton(BuildContext context) {
+  void showSignOutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          content: Text(
+            "정말로 탈퇴하시겠습니까?\n사라진 데이터는 복구할 수 없습니다.",
+            style: TextStyle(fontSize: 18),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.deepPurpleAccent),
+              child: Text(
+                "아니오",
+                style: TextStyle(fontSize: 16),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: Text(
+                "예",
+                style: TextStyle(fontSize: 16),
+              ),
+              onPressed: () {
+                // TODO: Session 만료 및 회원정보 삭제
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const Root()),
+                    (route) => false);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  return TextButton(
+      onPressed: () {
+        showSignOutDialog(context);
+      },
+      child: Text(
+        '회원 탈퇴',
+        style: TextStyle(
+            decoration: TextDecoration.underline,
+            fontSize: 18,
+            color: Colors.grey),
+      ));
 }

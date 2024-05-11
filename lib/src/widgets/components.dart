@@ -741,14 +741,14 @@ void showReportDialog(BuildContext context) {
       });
 }
 
-class ProfileImage extends StatefulWidget {
-  const ProfileImage({super.key});
+class ProfileImageSetting extends StatefulWidget {
+  const ProfileImageSetting({super.key});
 
   @override
-  State<ProfileImage> createState() => _ProfileImageState();
+  State<ProfileImageSetting> createState() => _ProfileImageSettingState();
 }
 
-class _ProfileImageState extends State<ProfileImage> {
+class _ProfileImageSettingState extends State<ProfileImageSetting> {
   XFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
@@ -774,7 +774,7 @@ class _ProfileImageState extends State<ProfileImage> {
             SizedBox(height: 10),
             TextButton(
                 onPressed: () {
-                  _imageFile = null;
+                  _showRegisterDialog(context);
                 },
                 child: Text(
                   '기본 프로필로 변경',
@@ -794,5 +794,50 @@ class _ProfileImageState extends State<ProfileImage> {
     setState(() {
       _imageFile = pickedFile;
     });
+  }
+
+  void _showRegisterDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            content: Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                "기본 프로필로 되돌리시겠습니까?",
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.deepPurpleAccent),
+                child: Text(
+                  "아니오",
+                  style: TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ElevatedButton(
+                child: Text(
+                  "확인",
+                  style: TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+                  setState(() {
+                    _imageFile = null;
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 }

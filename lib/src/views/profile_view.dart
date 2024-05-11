@@ -22,11 +22,11 @@ class _ProfileViewState extends State<ProfileView> {
             minHeight: MediaQuery.of(context).size.width * 0.5,
             minWidth: MediaQuery.of(context).size.width,
           ),
-          child: Center(
-            child: widgets.ProfileImage()
-          ),
+          child: Center(child: widgets.ProfileImageSetting()),
         ),
-        widgets.profileTable(context, nickname, email, introduction)
+        widgets.profileTable(context, nickname, email, introduction),
+        SizedBox(height: 60),
+        widgets.signOutButton(context)
       ],
     );
   }

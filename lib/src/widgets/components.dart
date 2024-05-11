@@ -841,3 +841,38 @@ class _ProfileImageSettingState extends State<ProfileImageSetting> {
         });
   }
 }
+
+Widget tagList(BuildContext context, List<String>? tags) {
+  if (tags != null) {
+    final random = Random();
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
+      child: Wrap(spacing: 8.0, runSpacing: 4.0, children: [
+        for (var item in tags)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0, vertical: 5.0),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                backgroundColor: Color.fromARGB(
+                    random.nextInt(256),
+                    random.nextInt(256),
+                    random.nextInt(256),
+                    random.nextInt(256)),
+                surfaceTintColor: Colors.transparent),
+            onPressed: () {
+              // TODO: 눌렀을 때 검색
+            },
+            child: Text(item,
+                style: TextStyle(
+                  fontSize: 14.0,
+                )),
+          ),
+      ]),
+    );
+    ;
+  } else {
+    return Container();
+  }
+}

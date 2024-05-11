@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:camera/camera.dart';
+import 'package:anidex_app/src/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
+import 'package:provider/provider.dart';
+import 'package:anidex_app/src/providers/providers.dart' as providers;
 
 class CaptureScreen extends StatefulWidget {
   const CaptureScreen({
@@ -53,7 +56,7 @@ class CaptureScreenState extends State<CaptureScreen> {
       final XFile tempfile = await controller.takePicture();
 
       ImageProperties properties =
-      await FlutterNativeImage.getImageProperties(tempfile.path);
+          await FlutterNativeImage.getImageProperties(tempfile.path);
       var cropSize = min(properties.width!, properties.height!);
       int offsetX = (properties.width! - cropSize) ~/ 2;
       int offsetY = (properties.height! - cropSize) ~/ 2;
@@ -76,11 +79,11 @@ class CaptureScreenState extends State<CaptureScreen> {
     const isColletect = 0;
     if (isColletect == 0) {
       // TODO: 도감에 등재하는 함수
-      // showRegisterDialog(animalName);
+      showRegisterDialog(context, animalName);
       return true;
     } else if (isColletect == 1) {
       // 2. 등재된 동물이면 사진 추가
-      return await showAddPictureDialog (context, animalName, imageFile);
+      return await showAddPictureDialog(context, animalName, imageFile);
     } else {
       // 3. 인식 실패
       await showFailDialog(context, imageFile);
@@ -161,7 +164,45 @@ class CaptureScreenState extends State<CaptureScreen> {
   }
 }
 
-Future<bool> showAddPictureDialog(BuildContext context, animal, imageFile) async {
+void showRegisterDialog(BuildContext context, animalName) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("$animalName와(과) 친구가 되었다!"),
+          backgroundColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          content: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text(
+              "도감에 $animalName의 정보가 등록되었습니다.",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                child: Text(
+                  "확인",
+                  style: TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+                  context.read<providers.Tabs>().changePage(0);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const App()),
+                      (route) => false);
+                },
+              ),
+            ),
+          ],
+        );
+      });
+}
+
+Future<bool> showAddPictureDialog(
+    BuildContext context, animalName, imageFile) async {
   final response = await showDialog(
     context: context,
     barrierDismissible: false,
@@ -169,11 +210,11 @@ Future<bool> showAddPictureDialog(BuildContext context, animal, imageFile) async
       return AlertDialog(
         backgroundColor: Colors.white,
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         content: Padding(
           padding: EdgeInsets.all(10.0),
           child: Text(
-            "$animal은(는) 이미 도감에 등록된 동물입니다. 도감에 사진을 추가하시겠습니까?",
+            "$animalName은(는) 이미 도감에 등록된 동물입니다. 도감에 사진을 추가하시겠습니까?",
             style: TextStyle(fontSize: 20),
           ),
         ),
@@ -198,6 +239,10 @@ Future<bool> showAddPictureDialog(BuildContext context, animal, imageFile) async
             onPressed: () {
               Navigator.of(context).pop(true);
               // TODO: 도감에 사진 추가
+              context.read<providers.Tabs>().changePage(0);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const App()),
+                      (route) => false);
             },
           ),
         ],
@@ -216,7 +261,7 @@ void showDeletePictureDialog(BuildContext context) {
       return AlertDialog(
         backgroundColor: Colors.white,
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         content: Padding(
           padding: EdgeInsets.all(10.0),
           child: Text(
@@ -261,7 +306,7 @@ Future<void> showFailDialog(BuildContext context, imageFile) async {
       return AlertDialog(
         backgroundColor: Colors.white,
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         content: Padding(
           padding: EdgeInsets.all(10.0),
           child: Text(
@@ -297,7 +342,6 @@ Future<void> showFailDialog(BuildContext context, imageFile) async {
   );
 }
 
-
 void showAnimalReportDialog(BuildContext context, imageFile) {
   showDialog(
     barrierDismissible: false,
@@ -307,22 +351,23 @@ void showAnimalReportDialog(BuildContext context, imageFile) {
       return AlertDialog(
         backgroundColor: Colors.white,
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         content: Padding(
           padding: EdgeInsets.all(10.0),
           child: SizedBox(
             height: 120,
             width: 80,
-            child: Column(
-              children: [Text(
+            child: Column(children: [
+              Text(
                 "본인이 생각하는 동물의 이름을 제보해 주세요.",
                 style: TextStyle(fontSize: 20),
-              ), TextField(
+              ),
+              TextField(
                 controller: controller,
                 maxLines: 1,
                 style: TextStyle(fontSize: 20),
-              )]
-            ),
+              )
+            ]),
           ),
         ),
         actions: <Widget>[

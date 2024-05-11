@@ -53,28 +53,39 @@ class CaptureScreenState extends State<CaptureScreen> {
       final XFile tempfile = await controller.takePicture();
 
       ImageProperties properties =
-          await FlutterNativeImage.getImageProperties(tempfile.path);
+      await FlutterNativeImage.getImageProperties(tempfile.path);
       var cropSize = min(properties.width!, properties.height!);
       int offsetX = (properties.width! - cropSize) ~/ 2;
       int offsetY = (properties.height! - cropSize) ~/ 2;
       final imageFile = await FlutterNativeImage.cropImage(
           tempfile.path, offsetX, offsetY, cropSize, cropSize);
-      await _analyzePicture(imageFile);
-      Directory directory = Directory('storage/emulated/0/DCIM/MyImages');
-      await Directory(directory.path).create(recursive: true);
-      await File(imageFile.path).copy('${directory.path}/${tempfile.name}');
+      final savePhoto = await _analyzePicture(imageFile);
+      if (savePhoto != null && savePhoto) {
+        Directory directory = Directory('storage/emulated/0/DCIM/MyImages');
+        await Directory(directory.path).create(recursive: true);
+        await File(imageFile.path).copy('${directory.path}/${tempfile.name}');
+      }
+      return;
     } catch (e) {
       print('Error taking picture: $e');
     }
   }
 
-  Future<void> _analyzePicture(imageFile) async {
-    // 1. 등재되지 않은 동물이면 자동 등재
-
-    // 2. 등재된 동물이면 사진 추가
-
-    // 3. 인식 실패
-    showFailDialog(context, imageFile);
+  Future<bool?> _analyzePicture(imageFile) async {
+    const animalName = "토끼";
+    const isColletect = 0;
+    if (isColletect == 0) {
+      // TODO: 도감에 등재하는 함수
+      // showRegisterDialog(animalName);
+      return true;
+    } else if (isColletect == 1) {
+      // 2. 등재된 동물이면 사진 추가
+      return await showAddPictureDialog (context, animalName, imageFile);
+    } else {
+      // 3. 인식 실패
+      await showFailDialog(context, imageFile);
+      return true;
+    }
   }
 
   @override
@@ -135,6 +146,7 @@ class CaptureScreenState extends State<CaptureScreen> {
                       onTap: () {
                         controller.pausePreview();
                         _takePicture();
+                        controller.resumePreview();
                       },
                       child: const Icon(
                         Icons.camera_enhance_rounded,
@@ -149,9 +161,101 @@ class CaptureScreenState extends State<CaptureScreen> {
   }
 }
 
+Future<bool> showAddPictureDialog(BuildContext context, animal, imageFile) async {
+  final response = await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        content: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text(
+            "$animal은(는) 이미 도감에 등록된 동물입니다. 도감에 사진을 추가하시겠습니까?",
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+        actions: <Widget>[
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.deepPurpleAccent),
+            child: Text(
+              "아니오",
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              showDeletePictureDialog(context);
+            },
+          ),
+          ElevatedButton(
+            child: Text(
+              "예",
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              // TODO: 도감에 사진 추가
+            },
+          ),
+        ],
+      );
+    },
+  );
 
-void showFailDialog(BuildContext context, imageFile) {
+  return response;
+}
+
+void showDeletePictureDialog(BuildContext context) {
   showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        content: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text(
+            "사진이 저장되지 않고 삭제됩니다.",
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+        actions: <Widget>[
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.deepPurpleAccent),
+            child: Text(
+              "취소",
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            child: Text(
+              "확인",
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+              Navigator.of(context).pop(false);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> showFailDialog(BuildContext context, imageFile) async {
+  showDialog(
+    barrierDismissible: false,
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -184,7 +288,6 @@ void showFailDialog(BuildContext context, imageFile) {
               style: TextStyle(fontSize: 16),
             ),
             onPressed: () {
-              Navigator.of(context).pop();
               showAnimalReportDialog(context, imageFile);
             },
           ),
@@ -197,6 +300,7 @@ void showFailDialog(BuildContext context, imageFile) {
 
 void showAnimalReportDialog(BuildContext context, imageFile) {
   showDialog(
+    barrierDismissible: false,
     context: context,
     builder: (BuildContext context) {
       final controller = TextEditingController();
@@ -242,7 +346,7 @@ void showAnimalReportDialog(BuildContext context, imageFile) {
             onPressed: () {
               print(controller.text);
               print(imageFile);
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(true);
             },
           ),
         ],

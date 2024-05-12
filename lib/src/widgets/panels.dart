@@ -27,9 +27,10 @@ class _CommentPanelState extends State<CommentPanel> {
                 spacing: 8.0,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  Icon(
-                    Icons.account_circle,
-                    size: 30,
+                  Image.asset(
+                    'assets/images/default_profile.png',
+                    width: 30,
+                    height: 30,
                   ),
                   Text(
                       style:

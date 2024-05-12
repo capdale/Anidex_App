@@ -56,7 +56,7 @@ class _EmailLoginState extends State<EmailLogin> {
                   isValid = _validateEmail(_emailController.text);
                   if (isValid) {
                     context
-                        .read<providers.UserEmail>()
+                        .read<providers.UserInfo>()
                         .changeUserEmail(_emailController.text);
                     if (key) {
                       Navigator.push(
@@ -218,7 +218,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    final userEmail = context.read<providers.UserEmail>().userEmail;
+    final userEmail = context.read<providers.UserInfo>().userEmail;
     return Scaffold(
       appBar: widgets.DefaultAppBar(
         title: '가입하기',

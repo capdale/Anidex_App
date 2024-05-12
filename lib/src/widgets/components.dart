@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:anidex_app/src/root.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -871,7 +870,6 @@ Widget tagList(BuildContext context, List<String>? tags) {
           ),
       ]),
     );
-    ;
   } else {
     return Container();
   }

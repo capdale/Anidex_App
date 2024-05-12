@@ -5,3 +5,4 @@ export 'profile_view.dart';
 export 'content_view.dart';
 export 'upload_view.dart';
 export 'capture_view.dart';
+export 'login_view.dart';

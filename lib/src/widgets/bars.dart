@@ -12,16 +12,22 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: IconButton(
-          onPressed: () {
+      leadingWidth: 70,
+      leading: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: InkWell(
+          onTap: () {
             Navigator.push(
                 context,
                 CupertinoPageRoute(
                     builder: (context) => pages.Profile(),
                     fullscreenDialog: true));
           },
-          icon: Icon(Icons.account_circle),
-          iconSize: 50),
+          child: Image.asset(
+            'assets/images/default_profile.png',
+          ),
+        ),
+      ),
     );
   }
 
@@ -44,9 +50,7 @@ class _BotNaviBarState extends State<BotNaviBar> {
       height: 80,
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(
-              color: Colors.grey,
-              width: 0.7), // Adjust color and width as needed
+          top: BorderSide(color: Colors.grey, width: 0.7),
         ),
       ),
       child: BottomNavigationBar(
@@ -109,7 +113,12 @@ class CustomedSearchBar extends StatelessWidget {
 
 //DefaultAppBar
 class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const DefaultAppBar({super.key, this.title, this.barColor, this.showActions = true, this.elevation = true});
+  const DefaultAppBar(
+      {super.key,
+      this.title,
+      this.barColor,
+      this.showActions = true,
+      this.elevation = true});
 
   final title;
   final barColor;
@@ -171,18 +180,22 @@ AppBar uploadImgBar(BuildContext context) {
       Container(
         margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         decoration: BoxDecoration(
-          color: Colors.deepPurpleAccent,
-          borderRadius: BorderRadius.circular(5)
-        ),
+            color: Colors.deepPurpleAccent,
+            borderRadius: BorderRadius.circular(5)),
         child: TextButton(
             onPressed: () {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => pages.UploadPost(),
-                  fullscreenDialog: false));
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => pages.UploadPost(),
+                      fullscreenDialog: false));
             },
             child: Text(
               '다음',
-              style: TextStyle(color: Color(0xFFF7F6FA), fontSize: 18, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  color: Color(0xFFF7F6FA),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500),
             )),
       )
     ],
@@ -208,15 +221,17 @@ AppBar uploadPostBar(BuildContext context) {
         margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         decoration: BoxDecoration(
             color: Colors.deepPurpleAccent,
-            borderRadius: BorderRadius.circular(5)
-        ),
+            borderRadius: BorderRadius.circular(5)),
         child: TextButton(
             onPressed: () {
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
             child: Text(
               '등록',
-              style: TextStyle(color: Color(0xFFF7F6FA), fontSize: 18, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  color: Color(0xFFF7F6FA),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500),
             )),
       )
     ],
@@ -229,9 +244,10 @@ Widget authorBar(BuildContext context) {
     margin: EdgeInsets.all(12.0),
     child: Row(
       children: [
-        Icon(
-          Icons.account_circle,
-          size: 40,
+        Image.asset(
+          'assets/images/default_profile.png',
+          width: 40,
+          height: 40,
         ),
         SizedBox(width: 8),
         Text(
@@ -276,11 +292,17 @@ class TitleBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500, color: Color(0xff777777)),
+                style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff777777)),
                 'No. ${((indexNum ?? 0) + 1).toString().padLeft(3, '0')}'),
             SizedBox(width: 8),
             Text(
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Color(0xff9451D2)),
+                style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w900,
+                    color: Color(0xff9451D2)),
                 '까치'),
           ],
         ),

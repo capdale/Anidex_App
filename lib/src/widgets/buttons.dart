@@ -8,46 +8,27 @@ import 'package:provider/provider.dart';
 
 Widget captureButton(BuildContext context) {
   final firstCamera = context.read<providers.CameraProvider>().camera;
+  var width = MediaQuery.of(context).size.width * 0.8;
 
   return Center(
-    child: Transform.scale(
-      scale: 6.0,
-      child: FloatingActionButton(
-        onPressed: () async {
-          var status = await Permission.camera.status;
-          if (status.isGranted) {
-            if (context.mounted) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => views.CaptureScreen(
-                          camera: firstCamera!,
-                        )),
-              );
-            }
-          } else if (status.isDenied) {
-            Permission.camera.request();
+    child: InkWell(
+      child: Image.asset('assets/images/capture_button.png',width: width,),
+      onTap: () async {
+        var status = await Permission.camera.status;
+        if (status.isGranted) {
+          if (context.mounted) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => views.CaptureScreen(
+                        camera: firstCamera!,
+                      )),
+            );
           }
-        },
-        backgroundColor: Colors.white,
-        shape: CircleBorder(
-          side: BorderSide(color: Colors.deepPurple, width: 2.0),
-        ),
-        child: Text(
-          'CAPTURE',
-          style: TextStyle(
-            fontSize: 9,
-            fontWeight: FontWeight.bold,
-            shadows: [
-              Shadow(
-                offset: Offset(1.0, 1.0),
-                blurRadius: 30.0,
-                color: Color.fromARGB(100, 0, 0, 0),
-              ),
-            ],
-          ),
-        ),
-      ),
+        } else if (status.isDenied) {
+          Permission.camera.request();
+        }
+      },
     ),
   );
 }

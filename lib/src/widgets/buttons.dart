@@ -113,7 +113,7 @@ class ChangeProfileButton extends StatelessWidget {
   }
 }
 
-Widget signOutButton(BuildContext context) {
+Widget withdrawButton(BuildContext context) {
   void showSignOutDialog(BuildContext context) {
     showDialog(
       context: context,

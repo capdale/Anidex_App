@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:anidex_app/src/root.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +13,10 @@ Future<void> main() async {
 
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
+  String apiKey = Platform.environment['API_KEY'] ?? 'Default_API_Key';
+  print('Your API Key is: $apiKey');
   KakaoSdk.init(
-    nativeAppKey: 'b7c040afe558826d76d3435b089066fd',
+    nativeAppKey: apiKey,
   );
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (create) => providers.Tabs()),

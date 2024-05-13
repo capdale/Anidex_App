@@ -15,19 +15,21 @@ class _ProfileViewState extends State<ProfileView> {
     var email = "user1234@naver.com";
     var introduction = "안녕하세요, 만나서 반갑습니다.";
 
-    return Column(
-      children: [
-        Container(
-          constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.width * 0.5,
-            minWidth: MediaQuery.of(context).size.width,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.width * 0.5,
+              minWidth: MediaQuery.of(context).size.width,
+            ),
+            child: Center(child: widgets.ProfileImageSetting()),
           ),
-          child: Center(child: widgets.ProfileImageSetting()),
-        ),
-        widgets.profileTable(context, nickname, email, introduction),
-        SizedBox(height: 60),
-        widgets.signOutButton(context)
-      ],
+          widgets.profileTable(context, nickname, email, introduction),
+          SizedBox(height: 60),
+          widgets.withdrawButton(context)
+        ],
+      ),
     );
   }
 }

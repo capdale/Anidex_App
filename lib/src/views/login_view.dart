@@ -47,7 +47,6 @@ class KakaoLogin extends Login {
 
   @override
   Future<bool> login(BuildContext context) async {
-    print(await KakaoSdk.origin);
     if (await isKakaoTalkInstalled()) {
       try {
         await UserApi.instance.loginWithKakaoTalk();

@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="${applicationName}"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/launcher_icon"
         android:label="모두의 동물도감"
@@ -55,7 +54,7 @@
                 <!-- 카카오 로그인 Redirect URI -->
                 <data
                     android:host="oauth"
-                    android:scheme="kakaob7c040afe558826d76d3435b089066fd" />
+                    android:scheme="kakao${kakaoApiKey}" />
             </intent-filter>
         </activity>
     </application>

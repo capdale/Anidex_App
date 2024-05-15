@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image/image.dart' as img;
 import 'package:anidex_app/src/providers/providers.dart' as providers;
+import 'package:anidex_app/src/model/_init.dart' as model;
 
 class CaptureScreen extends StatefulWidget {
   const CaptureScreen({
@@ -52,26 +53,26 @@ class CaptureScreenState extends State<CaptureScreen> {
     if (!controller.value.isInitialized) {
       return;
     }
-    const inputSize = 224;
+
     try {
       final XFile tempfile = await controller.takePicture();
-      List<int> imageBytes = await tempfile.readAsBytes();
-      final Uint8List uint8list = Uint8List.fromList(imageBytes);
-      img.Image? image = img.decodeImage(uint8list)!;
+      List<int> imageBytes = await File(tempfile.path).readAsBytes();
+      img.Image? image = img.copyRotate(img.decodeImage(imageBytes)!, 90);
 
+      print(image.width);
+      print(image.height);
       var cropSize = min(image.width, image.height);
       int offsetX = (image.width - cropSize) ~/ 2;
       int offsetY = (image.height - cropSize) ~/ 2;
-      img.Image cropOne = img.copyCrop(image,
-          x: offsetX, y: offsetY, height: cropSize, width: cropSize);
+      img.Image cropOne =
+          img.copyCrop(image, offsetX, offsetY, cropSize, cropSize);
 
       final savePhoto = await _analyzePicture(cropOne);
       if (savePhoto != null && savePhoto) {
-        Directory directory = Directory('storage/emulated/0/DCIM/MyImages');
+        Directory directory = Directory('storage/emulated/0/DCIM/anidex_image');
         await Directory(directory.path).create(recursive: true);
         List<int> pngBytes = img.encodePng(cropOne);
         File('${directory.path}/${tempfile.name}').writeAsBytesSync(pngBytes);
-        print("success");
       }
       return;
     } catch (e) {
@@ -80,20 +81,26 @@ class CaptureScreenState extends State<CaptureScreen> {
   }
 
   Future<bool?> _analyzePicture(imageFile) async {
-    const animalName = "토끼";
+    model.Net mobileNet = model.Net();
+    Map result = await mobileNet.runModel(imageFile);
+    String animalName = result['label'];
     const isColletect = 0;
-    if (isColletect == 0) {
-      // TODO: 도감에 등재하는 함수
-      showRegisterDialog(context, animalName);
-      return true;
-    } else if (isColletect == 1) {
-      // 2. 등재된 동물이면 사진 추가
-      return await showAddPictureDialog(context, animalName, imageFile);
-    } else {
-      // 3. 인식 실패
-      await showFailDialog(context, imageFile);
-      return true;
+    print(result['id']);
+    if (mounted) {
+      if (isColletect == 0) {
+        // TODO: 도감에 등재하는 함수
+        showRegisterDialog(context, animalName);
+        return true;
+      } else if (isColletect == 1) {
+        // 2. 등재된 동물이면 사진 추가
+        return await showAddPictureDialog(context, animalName, imageFile);
+      } else {
+        // 3. 인식 실패
+        await showFailDialog(context, imageFile);
+        return true;
+      }
     }
+    return null;
   }
 
   @override

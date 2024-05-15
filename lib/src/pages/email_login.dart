@@ -259,7 +259,7 @@ class _SignUpState extends State<SignUp> {
                   });
                 },
                 decoration: InputDecoration(
-                  hintText: '8~16자리를 입력해 주세요.',
+                  hintText: '8~22자리를 입력해 주세요.',
                   hintStyle: TextStyle(fontSize: 24),
                   suffixIcon: isIconVisible
                       ? IconButton(
@@ -316,17 +316,17 @@ class _SignUpState extends State<SignUp> {
                 controller: _nameController,
                 onChanged: (text) {
                   setState(() {
-                    nameCheck = _validateName(text);
+                    nameCheck = _validateUsername(text);
                   });
                 },
                 decoration: InputDecoration(
-                  hintText: '이름을 입력해 주세요.',
+                  hintText: '6~12자리 닉네임을 입력해 주세요.',
                   hintStyle: TextStyle(fontSize: 24),
                 ),
                 style: TextStyle(fontSize: 24),
               ),
               SizedBox(height: 5),
-              nameCheck ? _showHint('') : _showHint('올바른 이름을 입력해 주세요.'),
+              nameCheck ? _showHint('') : _showHint('6~12자리의 ., _, -를 포함한 영문·숫자만 가능합니다.'),
               SizedBox(height: 50),
               Text(
                 '아래 버튼을 누르면 인증 메일이 발송됩니다.\n인증을 완료하시고 다시 한번 로그인해 주세요.',
@@ -375,8 +375,10 @@ class _SignUpState extends State<SignUp> {
     return false;
   }
 
-  bool _validateName(String name) {
-    if (name.isNotEmpty && name.length < 30) {
+  bool _validateUsername(String name) {
+    final RegExp usernameRegExp =
+      RegExp(r'^[a-zA-Z0-9._-]{6,12}$');
+    if (name.isNotEmpty && usernameRegExp.hasMatch(name)) {
       return true;
     }
     return false;

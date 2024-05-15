@@ -53,6 +53,11 @@ dependencies:
   image: ^3.3.0
   path: ^1.9.0
   uuid: ^4.4.0
+  modak:
+#    path: lib/modak-api
+    git:
+      url: git@github.com:capdale/modak-api.git
+      ref: master
 
 dev_dependencies:
   flutter_test:

@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:anidex_app/src/app.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:provider/provider.dart';
+import 'package:image/image.dart' as img;
 import 'package:anidex_app/src/providers/providers.dart' as providers;
 
 class CaptureScreen extends StatefulWidget {
@@ -51,22 +52,26 @@ class CaptureScreenState extends State<CaptureScreen> {
     if (!controller.value.isInitialized) {
       return;
     }
-
+    const inputSize = 224;
     try {
       final XFile tempfile = await controller.takePicture();
+      List<int> imageBytes = await tempfile.readAsBytes();
+      final Uint8List uint8list = Uint8List.fromList(imageBytes);
+      img.Image? image = img.decodeImage(uint8list)!;
 
-      ImageProperties properties =
-          await FlutterNativeImage.getImageProperties(tempfile.path);
-      var cropSize = min(properties.width!, properties.height!);
-      int offsetX = (properties.width! - cropSize) ~/ 2;
-      int offsetY = (properties.height! - cropSize) ~/ 2;
-      final imageFile = await FlutterNativeImage.cropImage(
-          tempfile.path, offsetX, offsetY, cropSize, cropSize);
-      final savePhoto = await _analyzePicture(imageFile);
+      var cropSize = min(image.width, image.height);
+      int offsetX = (image.width - cropSize) ~/ 2;
+      int offsetY = (image.height - cropSize) ~/ 2;
+      img.Image cropOne = img.copyCrop(image,
+          x: offsetX, y: offsetY, height: cropSize, width: cropSize);
+
+      final savePhoto = await _analyzePicture(cropOne);
       if (savePhoto != null && savePhoto) {
         Directory directory = Directory('storage/emulated/0/DCIM/MyImages');
         await Directory(directory.path).create(recursive: true);
-        await File(imageFile.path).copy('${directory.path}/${tempfile.name}');
+        List<int> pngBytes = img.encodePng(cropOne);
+        File('${directory.path}/${tempfile.name}').writeAsBytesSync(pngBytes);
+        print("success");
       }
       return;
     } catch (e) {
@@ -242,7 +247,7 @@ Future<bool> showAddPictureDialog(
               context.read<providers.Tabs>().changePage(0);
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => const App()),
-                      (route) => false);
+                  (route) => false);
             },
           ),
         ],

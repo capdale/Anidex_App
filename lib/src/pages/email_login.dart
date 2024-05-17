@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:anidex_app/src/api/_init.dart' as api;
 import 'package:flutter/material.dart';
 import 'package:anidex_app/src/app.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +16,7 @@ class EmailLogin extends StatefulWidget {
 
 class _EmailLoginState extends State<EmailLogin> {
   final TextEditingController _emailController = TextEditingController();
+
   var isValid = false;
   var emailHint = Text('가입된 계정인지 확인할게요 😽',
       style: TextStyle(fontSize: 22, color: Color.fromRGBO(96, 96, 96, 1)));
@@ -51,20 +55,24 @@ class _EmailLoginState extends State<EmailLogin> {
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 50)),
-                onPressed: () {
-                  var key = true; // 가입된 이메일이냐?
+                onPressed: () async {
                   isValid = _validateEmail(_emailController.text);
+
                   if (isValid) {
                     context
                         .read<providers.UserInfo>()
                         .changeUserEmail(_emailController.text);
-                    if (key) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PasswordInput()));
-                    } else {
-                      widgets.showSignUpDialog(context);
+                    var isRegistered = await api.ModakApi.postEmail(
+                        {"email": _emailController.text});
+                    if (context.mounted) {
+                      if (isRegistered) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PasswordInput()));
+                      } else {
+                        widgets.showSignUpDialog(context);
+                      }
                     }
                   } else {
                     setState(() {
@@ -102,6 +110,8 @@ class PasswordInput extends StatefulWidget {
 }
 
 class _PasswordInputState extends State<PasswordInput> {
+  final TextEditingController _pwdController = TextEditingController();
+
   var pwdHint = Text('다시 만나서 반가워요! 😻',
       style: TextStyle(fontSize: 22, color: Color.fromRGBO(96, 96, 96, 1)));
   bool isIconVisible = true;
@@ -134,6 +144,7 @@ class _PasswordInputState extends State<PasswordInput> {
               ),
               SizedBox(height: 20),
               TextField(
+                controller: _pwdController,
                 obscureText: hidePassword,
                 decoration: InputDecoration(
                   hintText: '비밀번호를 입력해 주세요.',
@@ -157,18 +168,24 @@ class _PasswordInputState extends State<PasswordInput> {
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 50)),
-                  onPressed: () {
-                    var pwdRight = true;
-                    if (pwdRight) {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => const App()),
-                          (route) => false);
-                    } else {
-                      setState(() {
-                        pwdHint = Text('비밀번호가 달라요. 다시 입력해 주실래요?',
-                            style: TextStyle(
-                                fontSize: 22, color: Colors.redAccent));
-                      });
+                  onPressed: () async {
+                    var pwdRight = await api.ModakApi.postLogin({
+                      "email": context.watch<providers.UserInfo>().userEmail,
+                      "password": _pwdController.text
+                    });
+                    if (context.mounted) {
+                      if (!pwdRight) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const App()),
+                            (route) => false);
+                      } else {
+                        setState(() {
+                          pwdHint = Text('비밀번호가 달라요. 다시 입력해 주실래요?',
+                              style: TextStyle(
+                                  fontSize: 22, color: Colors.redAccent));
+                        });
+                      }
                     }
                   },
                   child: Text('로그인',
@@ -310,7 +327,7 @@ class _SignUpState extends State<SignUp> {
               SizedBox(height: 5),
               pwd2Check ? _showHint('') : _showHint('비밀번호가 일치하지 않아요.'),
               SizedBox(height: 20),
-              Text('이름',
+              Text('닉네임',
                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28)),
               TextField(
                 controller: _nameController,
@@ -326,7 +343,9 @@ class _SignUpState extends State<SignUp> {
                 style: TextStyle(fontSize: 24),
               ),
               SizedBox(height: 5),
-              nameCheck ? _showHint('') : _showHint('6~12자리의 ., _, -를 포함한 영문·숫자만 가능합니다.'),
+              nameCheck
+                  ? _showHint('')
+                  : _showHint('6~12자리의 ., _, -를 포함한 영문·숫자만 가능합니다.'),
               SizedBox(height: 50),
               Text(
                 '아래 버튼을 누르면 인증 메일이 발송됩니다.\n인증을 완료하시고 다시 한번 로그인해 주세요.',
@@ -344,7 +363,8 @@ class _SignUpState extends State<SignUp> {
                         pwd2Check &&
                         nameCheck);
                     if (pwdRight) {
-                      widgets.showMessageDialog(context, '인증 메일이 발송되었습니다.', popAll: true);
+                      widgets.showMessageDialog(context, '인증 메일이 발송되었습니다.',
+                          popAll: true);
                     } else {
                       widgets.showMessageDialog(
                           context, '입력한 내용을 다시 한번 확인해주세요.');
@@ -376,8 +396,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   bool _validateUsername(String name) {
-    final RegExp usernameRegExp =
-      RegExp(r'^[a-zA-Z0-9._-]{6,12}$');
+    final RegExp usernameRegExp = RegExp(r'^[a-zA-Z0-9._-]{6,12}$');
     if (name.isNotEmpty && usernameRegExp.hasMatch(name)) {
       return true;
     }

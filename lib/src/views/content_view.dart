@@ -33,7 +33,8 @@ class _ContentViewState extends State<ContentView> {
           ),
           SizedBox(height: 5),
           SizedBox(
-              height: 600,
+              height: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width,
               child: Stack(
                 children: [
                   widgets.sliderWidget(context, (newIndex) {

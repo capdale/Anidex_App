@@ -45,3 +45,4 @@ app.*.map.json
 # Custom gitignore
 *.ttf
 devtools_options.yaml
+android/local.properties

@@ -1,5 +1,5 @@
 import 'package:anidex_app/src/providers/_init.dart' as providers;
-
+import 'package:anidex_app/src/Root.dart';
 import 'package:flutter/material.dart';
 import 'package:anidex_app/src/pages/_init.dart' as pages;
 import 'package:anidex_app/src/views/_init.dart' as views;
@@ -8,46 +8,27 @@ import 'package:provider/provider.dart';
 
 Widget captureButton(BuildContext context) {
   final firstCamera = context.read<providers.CameraProvider>().camera;
+  var width = MediaQuery.of(context).size.width * 0.8;
 
   return Center(
-    child: Transform.scale(
-      scale: 6.0,
-      child: FloatingActionButton(
-        onPressed: () async {
-          var status = await Permission.camera.status;
-          if (status.isGranted) {
-            if (context.mounted) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => views.CaptureScreen(
-                          camera: firstCamera!,
-                        )),
-              );
-            }
-          } else if (status.isDenied) {
-            Permission.camera.request();
+    child: InkWell(
+      child: Image.asset('assets/images/capture_button.png',width: width,),
+      onTap: () async {
+        var status = await Permission.camera.status;
+        if (status.isGranted) {
+          if (context.mounted) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => views.CaptureScreen(
+                        camera: firstCamera!,
+                      )),
+            );
           }
-        },
-        backgroundColor: Colors.white,
-        shape: CircleBorder(
-          side: BorderSide(color: Colors.deepPurple, width: 2.0),
-        ),
-        child: Text(
-          'CAPTURE',
-          style: TextStyle(
-            fontSize: 9,
-            fontWeight: FontWeight.bold,
-            shadows: [
-              Shadow(
-                offset: Offset(1.0, 1.0),
-                blurRadius: 30.0,
-                color: Color.fromARGB(100, 0, 0, 0),
-              ),
-            ],
-          ),
-        ),
-      ),
+        } else if (status.isDenied) {
+          Permission.camera.request();
+        }
+      },
     ),
   );
 }
@@ -130,4 +111,61 @@ class ChangeProfileButton extends StatelessWidget {
       },
     );
   }
+}
+
+Widget withdrawButton(BuildContext context) {
+  void showSignOutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          content: Text(
+            "정말로 탈퇴하시겠습니까?\n사라진 데이터는 복구할 수 없습니다.",
+            style: TextStyle(fontSize: 18),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.deepPurpleAccent),
+              child: Text(
+                "아니오",
+                style: TextStyle(fontSize: 16),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: Text(
+                "예",
+                style: TextStyle(fontSize: 16),
+              ),
+              onPressed: () {
+                // TODO: Session 만료 및 회원정보 삭제
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const Root()),
+                    (route) => false);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  return TextButton(
+      onPressed: () {
+        showSignOutDialog(context);
+      },
+      child: Text(
+        '회원 탈퇴',
+        style: TextStyle(
+            decoration: TextDecoration.underline,
+            fontSize: 18,
+            color: Colors.grey),
+      ));
 }

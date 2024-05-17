@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:anidex_app/src/root.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -217,14 +216,16 @@ class _FavoriteAndShareState extends State<FavoriteAndShare> {
                     }
                   });
                 },
-                icon: !like ? Icon(
-                  Icons.favorite_outline,
-                  size: 40,
-                ) : Icon(
-                  Icons.favorite_outlined,
-                  color: Colors.redAccent,
-                  size: 40,
-                )),
+                icon: !like
+                    ? Icon(
+                        Icons.favorite_outline,
+                        size: 40,
+                      )
+                    : Icon(
+                        Icons.favorite_outlined,
+                        color: Colors.redAccent,
+                        size: 40,
+                      )),
             Text(
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 '좋아요 $likeNum개'),
@@ -739,35 +740,50 @@ void showReportDialog(BuildContext context) {
       });
 }
 
-class ProfileImage extends StatefulWidget {
-  const ProfileImage({super.key});
+class ProfileImageSetting extends StatefulWidget {
+  const ProfileImageSetting({super.key});
 
   @override
-  State<ProfileImage> createState() => _ProfileImageState();
+  State<ProfileImageSetting> createState() => _ProfileImageSettingState();
 }
 
-class _ProfileImageState extends State<ProfileImage> {
+class _ProfileImageSettingState extends State<ProfileImageSetting> {
   XFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Stack(
-        children: <Widget>[
-          InkWell(
-            onTap: () {
-              takePhoto(ImageSource.gallery);
-            },
-            child: CircleAvatar(
-              radius: 80,
-              backgroundColor: Colors.white,
-              backgroundImage: _imageFile == null
-                  ? AssetImage('assets/images/default_profile.png')
-                  : FileImage(File(_imageFile!.path)) as ImageProvider,
+      child: Padding(
+        padding: const EdgeInsets.all(40.0),
+        child: Column(
+          children: [
+            InkWell(
+              onTap: () {
+                takePhoto(ImageSource.gallery);
+              },
+              child: CircleAvatar(
+                radius: 80,
+                backgroundColor: Colors.white,
+                backgroundImage: _imageFile == null
+                    ? AssetImage('assets/images/default_profile.png')
+                    : FileImage(File(_imageFile!.path)) as ImageProvider,
+              ),
             ),
-          ),
-        ],
+            SizedBox(height: 10),
+            TextButton(
+                onPressed: () {
+                  _showRegisterDialog(context);
+                },
+                child: Text(
+                  '기본 프로필로 변경',
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 18,
+                      color: Colors.grey),
+                ))
+          ],
+        ),
       ),
     );
   }
@@ -777,5 +793,84 @@ class _ProfileImageState extends State<ProfileImage> {
     setState(() {
       _imageFile = pickedFile;
     });
+  }
+
+  void _showRegisterDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            content: Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                "기본 프로필로 되돌리시겠습니까?",
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.deepPurpleAccent),
+                child: Text(
+                  "아니오",
+                  style: TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ElevatedButton(
+                child: Text(
+                  "확인",
+                  style: TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+                  setState(() {
+                    _imageFile = null;
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+}
+
+Widget tagList(BuildContext context, List<String>? tags) {
+  if (tags != null) {
+    final random = Random();
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
+      child: Wrap(spacing: 8.0, runSpacing: 4.0, children: [
+        for (var item in tags)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0, vertical: 5.0),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                backgroundColor: Color.fromARGB(
+                    random.nextInt(256),
+                    random.nextInt(256),
+                    random.nextInt(256),
+                    random.nextInt(256)),
+                surfaceTintColor: Colors.transparent),
+            onPressed: () {
+              // TODO: 눌렀을 때 검색
+            },
+            child: Text(item,
+                style: TextStyle(
+                  fontSize: 14.0,
+                )),
+          ),
+      ]),
+    );
+  } else {
+    return Container();
   }
 }

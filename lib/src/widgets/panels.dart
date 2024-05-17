@@ -12,6 +12,7 @@ class CommentPanel extends StatefulWidget {
 
 class _CommentPanelState extends State<CommentPanel> {
   final commentOwn = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,9 +27,10 @@ class _CommentPanelState extends State<CommentPanel> {
                 spacing: 8.0,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  Icon(
-                    Icons.account_circle,
-                    size: 30,
+                  Image.asset(
+                    'assets/images/default_profile.png',
+                    width: 30,
+                    height: 30,
                   ),
                   Text(
                       style:
@@ -104,4 +106,39 @@ Widget contentTable(BuildContext context) {
               children: [widgets.contentRow(context, '만난 장소', 'xxx, yyy')]),
         ],
       ));
+}
+
+Widget commentTextField(BuildContext context, TextEditingController controller,
+    Function(String) onSendPressed) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [BoxShadow(blurRadius: 4.0, color: Colors.grey)],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: '댓글 입력...',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.send_rounded, color: Colors.deepPurple, size: 30,),
+              onPressed: () {
+                onSendPressed(controller.text);
+              },
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
 }
